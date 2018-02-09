@@ -1,4 +1,4 @@
-package com.files4Days.stuff;
+package com.files4Dayz.stuff;
 
 public class Main {
 
