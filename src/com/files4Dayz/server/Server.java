@@ -2,6 +2,7 @@ package com.files4Dayz.server;
 import java.net.*;
 import java.io.*;
 
+<<<<<<< Updated upstream
 public class Server {
 	private static ServerSocket server;
 	private static Socket client;
@@ -22,4 +23,13 @@ public class Server {
 	public static void main(String[] args) throws IOException {
 		runServer();
 	}
+=======
+public class Server implements Runnable {
+
+	@Override
+	public void run() {
+		
+	}
+
+>>>>>>> Stashed changes
 }
