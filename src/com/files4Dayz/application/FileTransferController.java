@@ -7,10 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 public class FileTransferController extends Application {
@@ -26,6 +23,11 @@ public class FileTransferController extends Application {
 
 	@FXML
 	private ToggleGroup toggleGroup;
+
+	@FXML
+	private TextField ip;
+	@FXML
+	private TextField port;
 
 	public static void main(String[] args) {
 		launch();
@@ -58,8 +60,10 @@ public class FileTransferController extends Application {
 
 		// Establish start button functionality
 		startButton.setOnAction((event) -> {
-
+			ip = (TextField) root.lookup("#ip");
+			port = (TextField) root.lookup("#port");
 			System.out.println("Selected: " + selection[0]);
+			System.out.println(ip.getText() + ":" + port.getText());
 			//TODO some other stuff
 		});
 	}

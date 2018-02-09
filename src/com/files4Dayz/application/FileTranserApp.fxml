@@ -54,7 +54,7 @@
                   <Font size="23.0" />
                </font>
             </Label>
-            <TextField>
+            <TextField fx:id="ip">
                <font>
                   <Font size="20.0" />
                </font></TextField>
@@ -63,7 +63,7 @@
                   <Font size="23.0" />
                </font>
             </Label>
-            <TextField>
+            <TextField fx:id="port">
                <font>
                   <Font size="20.0" />
                </font></TextField>
