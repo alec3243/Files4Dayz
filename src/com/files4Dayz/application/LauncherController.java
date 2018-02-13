@@ -105,8 +105,12 @@ public class LauncherController extends Application {
 		port.textProperty().addListener((arg1,arg2,arg3) -> {
 			if (portEmpty()) {
 				startButton.setDisable(true);
-			} else if (!ipEmpty() && !portEmpty()) {
+			} else if (selection[0] == SERVER) {
 				startButton.setDisable(false);
+			} else if (!ipEmpty()) {
+				startButton.setDisable(false);
+			} else {
+				startButton.setDisable(true);
 			}
 			if (toggleGroup.getSelectedToggle() == null) {
 				startButton.setDisable(true);

@@ -89,6 +89,10 @@ public class ClientController extends Application {
 			switch(key.getCode()) {
 				case DELETE:
 					removeSelected();
+					break;
+				case PLUS:
+					addFile.fire();
+					break;
 			}
 		});
 		primaryStage.setScene(scene);
