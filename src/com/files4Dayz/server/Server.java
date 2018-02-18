@@ -17,7 +17,15 @@ public class Server {
 		}
 	}
 	
-	public void runServer() {
+	public void runAsClient(String host, int port, String file) {
+		try {
+			client = new Socket(host, port);
+			sendFile(file);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+	}
+	public void runAsServer() {
 		while (true) {
 			try {
 				client = server.accept();
@@ -59,11 +67,16 @@ public class Server {
 		byte[] buffer = new byte[1024];
 		
 		while (fileReadIn.read(buffer) > 0) {
+			byte[] data = encode(buffer);
 			dos.write(buffer);
 		}
 		
 		fileReadIn.close();
 		dos.close();	
+	}
+	private byte[] encode(byte[] buffer) {
+		// TODO: Encode data here
+		return new byte[] {};
 	}
 	private byte[] decode(byte[] buffer) {
 		// TODO: Decode hashed data
