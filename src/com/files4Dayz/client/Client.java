@@ -52,8 +52,27 @@ class ByteIterator implements Iterable<Boolean> {
 	
 	@Override
 	public Iterator<Boolean> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Iterator<Boolean>() {
+			private int curIndex = 0;
+			private int bitIndex = 0;
+			
+			public boolean hasNext() {
+				return ((curIndex < check.length) && (bitIndex < 8));
+			}
+			
+			public Boolean next() {
+				Boolean value = (check[curIndex] >> (7 - bitIndex) & 1) == 1;
+				bitIndex++;
+				if (bitIndex == 8) {
+					curIndex++;
+					bitIndex = 0;
+				}
+				return value;
+			}
+			
+			
+		};
+		
 	}
 	
 }
