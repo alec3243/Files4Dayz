@@ -1,6 +1,7 @@
 package com.files4Dayz.client;
 import java.io.*;
 import java.net.*;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class Client {
@@ -40,4 +41,19 @@ public class Client {
 	private static void hash() {
 		
 	}
+}
+
+class ByteIterator implements Iterable<Boolean> {
+	private final byte[] check;
+	
+	public ByteIterator(byte[] array) {
+		check = array;
+	}
+	
+	@Override
+	public Iterator<Boolean> iterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }
