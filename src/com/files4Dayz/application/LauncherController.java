@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 
 import static com.files4Dayz.application.LauncherController.Selection.*;

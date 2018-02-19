@@ -10,9 +10,9 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.files4Dayz.application.ServerController">
    <center>
-      <VBox prefHeight="400.0" prefWidth="494.0" BorderPane.alignment="CENTER">
+      <VBox maxHeight="-Infinity" prefHeight="349.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <TableView prefHeight="200.0" prefWidth="476.0">
+            <TableView fx:id="tableView" prefHeight="351.0" prefWidth="600.0">
               <columns>
                 <TableColumn prefWidth="273.0" text="Name" />
                 <TableColumn minWidth="0.0" prefWidth="109.0" text="Type" />
@@ -23,13 +23,39 @@
       </VBox>
    </center>
    <bottom>
-      <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="175.0" prefWidth="198.0" BorderPane.alignment="TOP_LEFT">
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="16.0" prefWidth="408.0" BorderPane.alignment="TOP_LEFT">
          <children>
-            <Label text="Label" />
+            <Label prefHeight="30.0" prefWidth="428.0" text="Connected to client at %IP:PORT%" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </Label>
          </children>
          <BorderPane.margin>
-            <Insets left="50.0" />
+            <Insets left="12.0" />
          </BorderPane.margin>
       </VBox>
    </bottom>
+   <top>
+      <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+                  <MenuItem mnemonicParsing="false" text="Settings" />
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
 </BorderPane>
