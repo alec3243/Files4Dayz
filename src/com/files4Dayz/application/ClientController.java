@@ -31,18 +31,31 @@ public class ClientController extends Application {
 
 	private ObservableList<File> data;
 
-	ClientController() {
+	private String ip;
+	private int port;
+
+	private ClientController() {
+	}
+
+	ClientController(String ip, int port) {
 		data = FXCollections.observableArrayList();
-		//TODO establish Client object for connection
+		this.ip = ip;
+		this.port = port;
+		//TODO Instantiate client with ip and port
+	}
+
+	public String getUserName() {
+		//TODO get username from Client
+		return "";
+	}
+
+	public String getUserPass() {
+		//TODO get password from Client
+		return "";
 	}
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
-		start(primaryStage,null,0);
-
-	}
-
-	public void start(final Stage primaryStage, String ip, int port) throws IOException {
+	public void start(final Stage primaryStage) throws IOException {
 		primaryStage.setTitle("Filez4Dayz Client");
 		final FXMLLoader loader = new FXMLLoader(getClass().getResource("ClientApp.fxml"));
 		final Parent root = loader.load();
@@ -138,5 +151,4 @@ public class ClientController extends Application {
 		// TODO check if file sent successfully
 		//TODO remove successfully transferred files from UI
 	}
-
 }

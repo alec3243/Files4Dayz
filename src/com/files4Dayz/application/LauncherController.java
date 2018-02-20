@@ -2,6 +2,7 @@ package com.files4Dayz.application;
 
 import com.files4Dayz.server.Server;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -20,6 +21,8 @@ import static com.files4Dayz.application.LauncherController.Selection.*;
 
 public class LauncherController extends Application {
 
+	private boolean loggedIn;
+
 	@FXML
 	private Button startButton;
 
@@ -33,6 +36,10 @@ public class LauncherController extends Application {
 	private TextField ip;
 	@FXML
 	private TextField port;
+
+	public void setLoggedIn(boolean loggedIn) {
+		this.loggedIn = loggedIn;
+	}
 
 	protected enum Selection {
 		CLIENT,SERVER;
@@ -140,17 +147,20 @@ public class LauncherController extends Application {
 	}
 
 	private void nextApplication(String ip, String port, Selection selection,Stage currentStage) throws IOException {
-		Stage stage = new Stage();
 		currentStage.close();
 		switch(selection) {
 			case CLIENT:
-				ClientController clientApp = new ClientController();
-				clientApp.start(currentStage, ip, Integer.parseInt(port));
+				startClient(ip, port);
 				break;
 			case SERVER:
 				ServerController serverApp = new ServerController();
 				serverApp.start(currentStage,Integer.parseInt(port));
 				break;
 		}
+	}
+
+	private void startClient(String ip, String port) throws IOException {
+		final LoginController loginApp = new LoginController(ip, Integer.parseInt(port));
+		loginApp.start(new Stage());
 	}
 }

@@ -13,8 +13,20 @@ import java.io.IOException;
 
 public class LoginController extends Application {
 
+    private String ip;
+    private int port;
+
+    LoginController(String ip, int port) {
+        this.ip = ip;
+        this.port = port;
+    }
+
     @Override
     public void start(final Stage primaryStage) throws IOException {
+        final ClientController client = new ClientController(ip, port);
+        final String realUser = client.getUserName();
+        final String realPass = client.getUserPass();
+        primaryStage.setAlwaysOnTop(true);
         primaryStage.setTitle("Login");
         final FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
         final Parent root = loader.load();
@@ -28,8 +40,16 @@ public class LoginController extends Application {
         loginButton.setOnAction((event) -> {
             final String userName = ((TextField) loader.getNamespace().get("usernameField")).getText();
             final String password = ((TextField) loader.getNamespace().get("passwordField")).getText();
-            //TODO if username && password are correct -> allow client to send files
-            // else -> warningLabel.setVisible(true);
+            if (userName.equals(realUser) && password.equals(realPass)) {
+                try {
+                    client.start(new Stage());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                primaryStage.close();
+            } else {
+                warningLabel.setVisible(true);
+            }
         });
         cancelButton.setOnAction((event -> primaryStage.close()));
 
@@ -37,4 +57,5 @@ public class LoginController extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
 }
