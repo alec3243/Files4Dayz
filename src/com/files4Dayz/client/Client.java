@@ -38,18 +38,72 @@ public class Client {
 		
 	}
 	
-	private static void checksum(byte[] x) {
-		
-		for (int i = 0; i < 1024; i ++) {
-			byte[] hold = new byte[1];
-			hold[0] = x[i];
-			
+	private static void findchecksum(byte[] x) {
+		String checksum = "";
+		for (int i = 0; i < 16; i ++) {
+			byte[] hold = new byte[64];
+			for (int j = 0; j < 64; j++) {
+				hold[j] = x[(i*64)+j];
+			}
+			ByteIterator check = new ByteIterator(hold);
+			String bits = "";
+			for (boolean b : check) {
+				if (b) {
+				bits += "1";	
+				} else {
+					bits += "0";
+				}
+			}
+			int index = 0;
+			String A = bits.substring(0, 4);
+			String B = "";
+			for (int z= 1; z < 128; z++) {
+				B = bits.substring(z*4, z*4+4);
+				A = addHex(A, B);
+				
+			}
+			checksum+=A;
 		}
 	}
 	
 	private static String addHex(String x, String y) {
+		String answer = "";
+		boolean overflow = false;
+		boolean carryover = false;
+		for (int i = 4; i > 0; i--) {
+			Integer A = Integer.parseInt(x.substring(i-1, i), 16);
+			Integer B = Integer.parseInt(y.substring(i-1, i), 16);
+			if (carryover) {
+				A++;
+				carryover = false;
+			}
+			Integer C = A + B;
+			if ((C / 16)>0) {
+				carryover = true;
+			}
+			C = (A+B)%16;
+			answer = Integer.toHexString(C) + answer;
+			
+		}
 		
+		if (carryover) {
+			for (int i = 4; i > 0; i++ ) {
+				if (carryover) { Integer A = Integer.parseInt(answer.substring(i-1, 0), 16);
+				A++;
+				if ((A/16)>0) {
+					A = 0;
+					StringBuilder stuff = new StringBuilder(answer);
+					stuff.setCharAt(i-3, Integer.toHexString(A).charAt(0));
+					carryover = true;
+				} else {
+					carryover = false;
+				}
+				}
+			}
+		}
 	}
+	
+	
 }
 
 class ByteIterator implements Iterable<Boolean> {
