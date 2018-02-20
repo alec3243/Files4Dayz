@@ -38,10 +38,17 @@ public class Client {
 		
 	}
 	
-	private static void hash() {
-		for (int i = 0; i < 10; i ++) {
+	private static void checksum(byte[] x) {
+		
+		for (int i = 0; i < 1024; i ++) {
+			byte[] hold = new byte[1];
+			hold[0] = x[i];
 			
 		}
+	}
+	
+	private static String addHex(String x, String y) {
+		
 	}
 }
 
