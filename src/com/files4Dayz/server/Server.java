@@ -2,10 +2,14 @@ package com.files4Dayz.server;
 import javax.net.ServerSocketFactory;
 import java.net.*;
 import java.io.*;
+import java.util.LinkedList;
+import java.util.Queue;
 
+import static com.files4Dayz.checksum.Checksum.findchecksum;
 
 public class Server {
 
+	private int port;
 	private Socket client;
 	private DataInputStream inFromClient;
 	private DataOutputStream outToClient;
@@ -13,10 +17,13 @@ public class Server {
 	private final String USERNAME = "username";
 	private final String PASSWORD = "password";
 
+	public Server(int port) {
+		this.port = port;
+	}
+
 	public void runServer() throws IOException {
-		final int PORT = 1342;
 		ServerSocketFactory factory = ServerSocketFactory.getDefault();
-		ServerSocket server = factory.createServerSocket(PORT);
+		ServerSocket server = factory.createServerSocket(port);
 		if (server == null) {
 			System.out.println("Fail to create server at this port");
 		} else {
@@ -25,22 +32,40 @@ public class Server {
 		client = server.accept();
 		wrapClientStreams();
 		sendCredentials();
-		listen();
-		if (client != null) {
-			System.out.println("Got a caller");
-		} else {
-			System.out.println("Not received the caller");
-		}
-	}
-
-	private void listen() throws IOException {
 		while (true) {
-			Thread.yield();
-			byte[] bytes = new byte[1024];
-			inFromClient.read(bytes);
-
+			listen();
 		}
 	}
+
+	/**
+	 * Listens for the next file transmission.
+	 * @throws IOException
+	 */
+	private void listen() throws IOException {
+		byte[] bytes = null;
+		long size = inFromClient.readLong();
+		final int kilobyte = 1024;
+		byte[] totalBytes = new byte[(int) size*kilobyte];
+		String originalChecksum = null;
+		String currentChecksum = null;
+		for (int i = 0; i < size; i++) {
+			// Read the next chunk
+			bytes = new byte[kilobyte];
+			inFromClient.read(bytes);
+			// Confirm that checksums are equal
+			originalChecksum = inFromClient.readUTF();
+			currentChecksum = findchecksum(bytes);
+			// Checksums are not equal, tell client to send chunk again
+			if (!currentChecksum.equals(originalChecksum)) {
+				outToClient.writeBoolean(false);
+				i--;
+			} else {
+				// Tell client that chunk is valid, continue
+				outToClient.writeBoolean(true);
+				//TODO idk lmfao
+			} }//TODO write the file
+	}
+
 
 	private void wrapClientStreams() throws IOException {
 		inFromClient = new DataInputStream(client.getInputStream());
@@ -53,6 +78,7 @@ public class Server {
 	}
 
 	public static void main(String[] args) throws IOException {
-
+		Server server = new Server(1432);
+		server.runServer();
 	}
 }

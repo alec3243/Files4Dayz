@@ -1,5 +1,6 @@
 package com.files4Dayz.application;
 
+import com.files4Dayz.server.Server;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,6 +24,8 @@ public class ServerController extends Application {
 
 	private final ObservableList<FileInfo> data = FXCollections.observableArrayList();
 
+	private Server server;
+
 	@FXML
 	private TableView tableView;
 	@FXML
@@ -32,17 +35,15 @@ public class ServerController extends Application {
 	@FXML
 	private TableColumn sizeCol;
 
-	public ServerController() {
+	public ServerController(int port) throws IOException {
 		downloadPath = null;
-		data.add(new FileInfo("test.txt"));
+		//data.add(new FileInfo("test.txt"));
+		server = new Server(port);
+		server.runServer();
 	}
 
 	@Override
-	public void start(Stage arg0) throws IOException {
-		start(arg0,0);
-	}
-
-	public void start(final Stage primaryStage, int port) throws IOException {
+	public void start(final Stage primaryStage) throws IOException {
 		primaryStage.setTitle("Filez4Dayz Server");
 		final FXMLLoader loader = new FXMLLoader(getClass().getResource("ServerApp.fxml"));
 		final Parent root = loader.load();

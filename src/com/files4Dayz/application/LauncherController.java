@@ -153,8 +153,8 @@ public class LauncherController extends Application {
 				startClient(ip, port);
 				break;
 			case SERVER:
-				ServerController serverApp = new ServerController();
-				serverApp.start(currentStage,Integer.parseInt(port));
+				ServerController serverApp = new ServerController(Integer.parseInt(port));
+				serverApp.start(new Stage());
 				break;
 		}
 	}

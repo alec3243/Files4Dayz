@@ -37,21 +37,20 @@ public class ClientController extends Application {
 	private ClientController() {
 	}
 
-	ClientController(String ip, int port) {
+	ClientController(String ip, int port) throws IOException {
 		data = FXCollections.observableArrayList();
 		this.ip = ip;
 		this.port = port;
 		//TODO Instantiate client with ip and port
+		client = new Client(ip, port);
 	}
 
 	public String getUserName() {
-		//TODO get username from Client
-		return "";
+		return client.getUsername();
 	}
 
 	public String getUserPass() {
-		//TODO get password from Client
-		return "";
+		return client.getPassword();
 	}
 
 	@Override
@@ -74,7 +73,11 @@ public class ClientController extends Application {
 
 		final Button sendButton = (Button) root.lookup("#sendButton");
 		sendButton.setOnAction((event) -> {
-			sendFiles();
+			try {
+				sendFiles();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		});
 		// Establish menu objects
 		final MenuBar menuBar = (MenuBar) root.lookup("#menuBar");
@@ -145,9 +148,12 @@ public class ClientController extends Application {
 		}
 	}
 
-	private void sendFiles() {
+	private void sendFiles() throws IOException {
 		// TODO tell Client to send files
-
+		File[] selected = fileTable.getSelectionModel().getSelectedItems().toArray(new File[0]);
+		for (int i = 0; i < selected.length; i++) {
+			client.sendFile(selected[i]);
+		}
 		// TODO check if file sent successfully
 		//TODO remove successfully transferred files from UI
 	}
