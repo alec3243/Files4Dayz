@@ -4,6 +4,7 @@ import java.net.*;
 import java.util.Iterator;
 import java.util.Scanner;
 
+
 public class Client {
 	static byte[] buffers;
 	static DataOutputStream out;
@@ -19,8 +20,7 @@ public class Client {
 		SendFile(is, check);
 		s.close();
 		sc.close();
-		
-		
+
 	}
 	
 	private static void SendFile(InputStream x, Long size) throws IOException {
