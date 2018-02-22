@@ -1,4 +1,6 @@
-.idea/workspace.xml
+# Android Studio / IntelliJ IDEA
+.idea/misc.xml
+.idea/modules.xml
 .idea/vcs.xml
-bin/com/files4Dayz/files4Dayz.iml
-src/com/files4Dayz/files4Dayz.iml
+.idea/workspace.xml
+Files4Dayz.iml
