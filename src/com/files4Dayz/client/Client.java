@@ -6,35 +6,65 @@ import java.util.Scanner;
 
 
 public class Client {
-	static byte[] buffers;
-	static DataOutputStream out;
-	static Socket s;
-	public static void main(String[] args) throws UnknownHostException, IOException {
-		Socket s = new Socket("127.0.0.1", 1342);
-		System.out.println("File Location?");
-		Scanner sc = new Scanner(System.in);
-		String name = sc.nextLine();
-		File file = new File(name);
+	private DataOutputStream outToServer;
+	private DataInputStream inFromServer;
+	private Socket s;
+
+	private String username;
+	private String password;
+
+	public void main(String[] args) throws UnknownHostException, IOException {
+		s = new Socket("127.0.0.1", 1342);
+		wrapClientStreams();
+		// Get login details from server
+		getCredentials();
+//		System.out.println("File Location?");
+//		Scanner sc = new Scanner(System.in);
+//		String name = sc.nextLine();
+//		File file = new File(name);
+//		Long check = file.length()/1024;
+//		InputStream is = new FileInputStream(file);
+//		sendFile(is, check);
+//		s.close();
+//		sc.close();
+	}
+
+	public void sendFile(File file) throws IOException {
 		Long check = file.length()/1024;
 		InputStream is = new FileInputStream(file);
-		SendFile(is, check);
-		s.close();
-		sc.close();
+		sendFile(is,check);
+	}
 
+	public String getUsername() {
+		return username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	private void getCredentials() throws IOException {
+		username = inFromServer.readUTF();
+		password = inFromServer.readUTF();
+	}
+
+	private void wrapClientStreams() throws IOException {
+		inFromServer = new DataInputStream(s.getInputStream());
+		outToServer = new DataOutputStream(new BufferedOutputStream(s.getOutputStream()));
 	}
 	
-	private static void SendFile(InputStream x, Long size) throws IOException {
+	private void sendFile(InputStream x, Long size) throws IOException {
 		DataInputStream getFile = new DataInputStream(x);
-		out = new DataOutputStream(new BufferedOutputStream(s.getOutputStream()));
 		long pieces = 0;
+		byte[] buffers = null;
 		while (size > pieces) {
 			buffers = new byte[1024];
 			getFile.read(buffers);
-			out.write(buffers, 0, buffers.length);
-			out.writeChars(findchecksum(buffers));
+			outToServer.write(buffers, 0, buffers.length);
+			outToServer.writeChars(findchecksum(buffers));
 			pieces++;
 		}
-		out.close();
+		outToServer.close();
 		getFile.close();
 		
 	}
