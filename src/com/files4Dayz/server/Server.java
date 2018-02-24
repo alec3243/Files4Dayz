@@ -2,6 +2,7 @@ package com.files4Dayz.server;
 import java.net.*;
 import java.io.*;
 
+
 public class Server {
 	private ServerSocket server;
 	private Socket client;
@@ -14,6 +15,15 @@ public class Server {
 			System.out.println("Server established. Waiting for client to send file");
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void runServer() throws IOException {
+		server = new ServerSocket(1342);
+		if (server == null) {
+			System.out.println("Fail to create server at this port");
+		} else {
+			System.out.println("Server established");
 		}
 	}
 	
