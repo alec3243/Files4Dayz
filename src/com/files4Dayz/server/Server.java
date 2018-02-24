@@ -2,10 +2,8 @@ package com.files4Dayz.server;
 import javax.net.ServerSocketFactory;
 import java.net.*;
 import java.io.*;
-import java.util.LinkedList;
-import java.util.Queue;
 
-import static com.files4Dayz.checksum.Checksum.findchecksum;
+import static com.files4Dayz.security.Checksum.findchecksum;
 
 public class Server {
 

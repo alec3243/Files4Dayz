@@ -1,4 +1,4 @@
-package com.files4Dayz.checksum;
+package com.files4Dayz.security;
 
 
 import java.util.Iterator;

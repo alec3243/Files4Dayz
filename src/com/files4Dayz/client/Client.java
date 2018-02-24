@@ -2,7 +2,7 @@ package com.files4Dayz.client;
 import java.io.*;
 import java.net.*;
 
-import static com.files4Dayz.checksum.Checksum.findchecksum;
+import static com.files4Dayz.security.Checksum.findchecksum;
 
 
 public class Client {
