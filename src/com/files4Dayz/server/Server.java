@@ -12,8 +12,10 @@ public class Server {
 	private Socket client;
 	private int failTime;
 	private boolean successVerification = false;
+	private boolean successFileTransfer = true;
 	private final String userName = "admin";
 	private final String password = "abc123";
+	private final File key = null;
 	
 	public Server(int port){
 		try {
@@ -35,9 +37,9 @@ public class Server {
 				saveFile(client);
 			} else {
 				System.out.println("Login failed. Server will be closed");
-				server.close();
-				client.close();
 			}
+			server.close();
+			client.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -83,39 +85,47 @@ public class Server {
 		
 		// set each reading chunk to be 1024
 		byte[] originalChunk = new byte[1024];
-		String hashedValueFromClient = null;
 		
 		// decode
 		// byte[] data = decode(buffer);
 		
-		dataReadIn.read(originalChunk);
-		hashedValueFromClient = dataReadIn.readUTF();
-		String hashedValueComputed = findchecksum(originalChunk);
-		if (hashedValueComputed == hashedValueFromClient) {
-			int read = 0;
-			int totalRead = 0;
-			while ((read = dataReadIn.read(originalChunk)) > 0) {
+		int read = 0;
+		int totalRead = 0;
+		while ((read = dataReadIn.read(originalChunk)) > 0) {
+			String hashedValueFromClient = dataReadIn.readUTF();
+			// base 64 decode
+			decode(originalChunk);
+			
+			// decrypt
+			// encryptDecrypt(originalChunk, key);
+			
+			if (checkHash(originalChunk, hashedValueFromClient)) {
 				fileToSave.write(originalChunk, 0, read);
 				totalRead += read;
+			} else {
+				dataSendOut.writeUTF("wrong");
+				failTime -= 1;
+				if (failTime == 0) {
+					successFileTransfer = false;
+					break;
+				}
 			}
+		}
+		if (successFileTransfer) {
 			System.out.println("File size is " + totalRead + " bytes");
 			dataReadIn.close();
 			fileToSave.close();
-			failTime = 3;
 		} else {
-			dataSendOut = new DataOutputStream(client.getOutputStream());
-			dataSendOut.writeUTF("wrong");
-			failTime -= 1;
-			if (failTime == 0) {
-				System.out.println("Exceed faile time limit! Connection is terminated.");
-				server.close();
-			}
+			System.out.println("Exceed fail time limit! Connection is terminated.");
 		}
 	}
 	
-	private byte[] decode(byte[] buffer) {
+	private void decode(byte[] buffer) {
 		// TODO: Decode hashed data
-		return new byte[] {};
 	}
 	
+	private boolean checkHash(byte[] originalChunk, String hashedValueFromClient) {
+		String hashedValueComputed = findchecksum(originalChunk);
+		return hashedValueComputed.equals(hashedValueFromClient);
+	}
 }
