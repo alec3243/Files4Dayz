@@ -2,6 +2,9 @@ package com.files4Dayz.client;
 import java.io.*;
 import java.net.*;
 
+import com.files4Dayz.security.Checksum.ByteIterator;
+import com.files4Dayz.security.XorCipher;
+
 import static com.files4Dayz.security.Checksum.findchecksum;
 
 
@@ -64,6 +67,7 @@ public class Client {
 	
 	private void sendFile(InputStream x, Long size, String filename) throws IOException {
 		DataInputStream getFile = new DataInputStream(x);
+		boolean fail = false;
 		long pieces = 0;
 		byte[] buffers = null;
 		System.out.println(filename);
@@ -71,17 +75,28 @@ public class Client {
 		outToServer.writeLong(size);
 		//outToServer.writeUTF(filename);
 		while (size > pieces) {
+			int Counter = 0;
 			buffers = new byte[1024];
 			getFile.read(buffers);
-			outToServer.write(buffers, 0, buffers.length);
+			outToServer.write(XorCipher.encryptDecrypt(buffers, "1"), 0, buffers.length);
 			outToServer.writeUTF(findchecksum(buffers));
 			while (!inFromServer.readBoolean()) {
-				//TODO chunk was corrupt, send it again
+				if (Counter < 3) {
+					Counter++;
+					outToServer.write(XorCipher.encryptDecrypt(buffers, "1"));
+				} else {
+					fail = true;
+				}
+			}
+			if (fail) {
+				System.out.println("Send Failed!");
+				break;
 			}
 			pieces++;
 		}
 		getFile.close();
 	}
+	
 	
 }
 
