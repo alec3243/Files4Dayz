@@ -11,6 +11,7 @@ public class Server {
 	private ServerSocket server;
 	private Socket client;
 	private int failTime;
+	private boolean successVerification = false;
 	private final String userName = "admin";
 	private final String password = "abc123";
 	
@@ -24,23 +25,26 @@ public class Server {
 		}
 	}
 	public void runAsServer() {
-		while (true) {
-			try {
-				client = server.accept();
-				if (client != null) {
-					System.out.println("Got a caller");
-				}
-				verifyCredentials(client);
-				saveFile(client);
-			} catch(IOException e) {
-				e.printStackTrace();
+		try {
+			client = server.accept();
+			if (client != null) {
+				System.out.println("Got a caller");
 			}
+			verifyCredentials(client);
+			if (successVerification) {
+				saveFile(client);
+			} else {
+				System.out.println("Login failed. Server will be closed");
+				server.close();
+				client.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	private void verifyCredentials(Socket client) throws IOException{
 		String userNameClient = null;
 		String passwordClient = null;
-		boolean successVerification = false;
 		dataReadIn = new DataInputStream(client.getInputStream());
 		dataSendOut = new DataOutputStream(client.getOutputStream());
 		
@@ -49,7 +53,9 @@ public class Server {
 			userNameClient = dataReadIn.readUTF();
 			passwordClient = dataReadIn.readUTF();
 			if (!userNameClient.equals(userName) || !passwordClient.equals(password)) {
-				dataSendOut.writeUTF("Wrong combination");
+				if (failTime > 1) {
+					dataSendOut.writeUTF("Wrong combination");
+				}
 				failTime -= 1;
 			} else {
 				successVerification = true;
@@ -66,7 +72,6 @@ public class Server {
 		if (failTime == 0) {
 			System.out.println("Too many fails. Server will close");
 			dataSendOut.writeUTF("Close");
-			server.close();
 		}
 	}
 	private void saveFile(Socket client) throws IOException {
