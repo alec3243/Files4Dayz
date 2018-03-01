@@ -12,7 +12,7 @@ public class Client {
 	private DataOutputStream outToServer;
 	private DataInputStream inFromServer;
 	private Socket s;
-
+	private File file;
 	private String username;
 	private String password;
 
@@ -26,6 +26,7 @@ public class Client {
 	}
 
 	public void main(String[] args) throws UnknownHostException, IOException {
+		file = new File("Key.txt");
 		s = new Socket("127.0.0.1", 1342);
 		wrapClientStreams();
 		// Get login details from server
@@ -78,12 +79,12 @@ public class Client {
 			int Counter = 0;
 			buffers = new byte[1024];
 			getFile.read(buffers);
-			outToServer.write(XorCipher.encryptDecrypt(buffers, "1"), 0, buffers.length);
+			outToServer.write(XorCipher.encryptDecrypt(buffers, file), 0, buffers.length);
 			outToServer.writeUTF(findchecksum(buffers));
 			while (!inFromServer.readBoolean()) {
 				if (Counter < 3) {
 					Counter++;
-					outToServer.write(XorCipher.encryptDecrypt(buffers, "1"));
+					outToServer.write(XorCipher.encryptDecrypt(buffers, file));
 				} else {
 					fail = true;
 				}

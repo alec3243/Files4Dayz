@@ -1,17 +1,52 @@
 package com.files4Dayz.security;
 
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 
 public class XorCipher {
 
-    public static byte[] encryptDecrypt(byte[] inputx, String pass) throws UnsupportedEncodingException {
-        char[] key = pass.toCharArray();
-        String input = inputx.toString();
+    public static byte[] encryptDecrypt(byte[] inputx, File pass) throws IOException {
+    	InputStream is = new FileInputStream(pass);
+    	DataInputStream ds = new DataInputStream(is);
+    	byte[] password = new byte[1024];
+    	ds.read(password);
+    	
+    	ByteIterator bi1 = new ByteIterator(inputx);
+    	ByteIterator bi2 = new ByteIterator(password);
+    	
+    	String first = "";
+    	String second = "";
+    	
+    	for (boolean b : bi1) {
+    		if (b) {
+    			first+="1";
+    		} else {
+    			first+="0";
+    		}
+    		
+    	}
+    	for (boolean b : bi2) {
+    		if (b) {
+    			second+="1";
+    		} else {
+    			second+="0";
+    		}
+    		
+    	}
         StringBuilder output = new StringBuilder();
 
-        for (int i = 0; i < input.length(); i++) {
-            output.append((char) (input.charAt(i) ^ key[i % key.length]));
+        for (int i = 0; i < first.length(); i++) {
+            if (first.charAt(i) == second.charAt(i)) {
+            	output.append("0");
+            } else {
+            	output.append("1");
+            }
         }
 
         return output.toString().getBytes("ISO-8859-1");

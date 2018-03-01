@@ -73,7 +73,7 @@ public class Checksum {
         return answer;
     }
 
-    static class ByteIterator implements Iterable<Boolean> {
+    public static class ByteIterator implements Iterable<Boolean> {
         private final byte[] check;
 
         public ByteIterator(byte[] array) {
