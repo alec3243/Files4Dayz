@@ -15,7 +15,7 @@ public class Server {
 	private boolean successFileTransfer = true;
 	private final String userName = "admin";
 	private final String password = "abc123";
-	private final File key = null;
+	private final File key = new File("key.txt");
 	
 	public Server(int port){
 		try {
@@ -97,7 +97,7 @@ public class Server {
 			decode(originalChunk);
 			
 			// decrypt
-			// encryptDecrypt(originalChunk, key);
+			encryptDecrypt(originalChunk, key);
 			
 			if (checkHash(originalChunk, hashedValueFromClient)) {
 				fileToSave.write(originalChunk, 0, read);
@@ -111,6 +111,7 @@ public class Server {
 				}
 			}
 		}
+		
 		if (successFileTransfer) {
 			System.out.println("File size is " + totalRead + " bytes");
 			dataReadIn.close();
