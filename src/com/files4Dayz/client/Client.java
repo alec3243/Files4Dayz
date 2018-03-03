@@ -1,20 +1,17 @@
 package com.files4Dayz.client;
 import java.io.*;
 import java.net.*;
-import com.files4Dayz.security.XorCipher;
 
-import static com.files4Dayz.security.Checksum.findchecksum;
-
-
+import com.files4Dayz.security.Checksum;
+import java.util.*;
 public class Client {
 	private DataOutputStream outToServer;
 	private DataInputStream inFromServer;
-	private Socket s;
-	private File file;
+	private static Socket s;
+
 	private String username;
 	private String password;
 
-	public Client() {}
 
 	public Client(String ip, int port) throws IOException {
 		s = new Socket(ip, port);
@@ -23,18 +20,24 @@ public class Client {
 		getCredentials();
 	}
 
-	public void main(String[] args) throws UnknownHostException, IOException {
-	//	file = new File("Key.txt");
-		s = new Socket("10.110.180.90", 1342);
-		wrapClientStreams();
-		// Get login details from server
-		getCredentials();
-
-	}
+//	public static void main(String[] args) throws UnknownHostException, IOException {
+//		//System.out.println(InetAddress.getLocalHost().getHostAddress());
+//		s = new Socket("10.110.157.59", 1342);
+//		System.out.println("File Location?");
+//		Scanner sc = new Scanner(System.in);
+//		String name = sc.nextLine();
+//		File file = new File(name);
+//		Long check = file.length()/1024;
+//		InputStream is = new FileInputStream(file);
+//		//sendFile(file);
+//		s.close();
+//		sc.close();
+//	}
 
 	public void sendFile(File file) throws IOException {
-		Long check = file.length()/1024;
-		InputStream is = new FileInputStream(file);
+		int check = (int)(file.length()/1024) + 1;
+		System.out.println(file.length());
+		FileInputStream is = new FileInputStream(file);
 		sendFile(is,check, file.getName());
 	}
 
@@ -47,8 +50,21 @@ public class Client {
 	}
 
 	private void getCredentials() throws IOException {
-		username = inFromServer.readUTF();
-		password = inFromServer.readUTF();
+		Scanner sc = new Scanner(System.in);
+		String un, pw;
+		String message = null;
+		while (message == null || message.equals("Wrong combination")) {
+			System.out.println("Enter username:");
+			un = sc.nextLine();
+			outToServer.writeUTF(un);
+			outToServer.flush();
+			System.out.println("Enter password:");
+			pw = sc.nextLine();
+			outToServer.writeUTF(pw);
+			outToServer.flush();
+			message = inFromServer.readUTF();
+		}
+		sc.close();
 	}
 
 	private void wrapClientStreams() throws IOException {
@@ -56,39 +72,22 @@ public class Client {
 		outToServer = new DataOutputStream(new BufferedOutputStream(s.getOutputStream()));
 	}
 	
-	private void sendFile(InputStream x, Long size, String filename) throws IOException {
-		DataInputStream getFile = new DataInputStream(x);
-		boolean fail = false;
-		long pieces = 0;
-		byte[] buffers = null;
+	private void sendFile(FileInputStream x, int size, String filename) throws IOException {
+		byte[] buffers = new byte[1024];
 		System.out.println(filename);
 		System.out.println(size);
-		outToServer.writeLong(size);
-		//outToServer.writeUTF(filename);
-		while (size > pieces) {
-			int Counter = 0;
-			buffers = new byte[1024];
-			getFile.read(buffers);
-			outToServer.write(XorCipher.encryptDecrypt(buffers, file), 0, buffers.length);
-			outToServer.writeUTF(findchecksum(buffers));
-			
-			while (!inFromServer.readBoolean()) {
-				if (Counter < 3) {
-					Counter++;
-					outToServer.write(XorCipher.encryptDecrypt(buffers, file));
-				} else {
-					fail = true;
-				}
-			}
-			if (fail) {
-				System.out.println("Send Failed!");
-				break;
-			}
-			pieces++;
+		outToServer.writeUTF(filename);
+		outToServer.flush();
+		while (x.read(buffers) > 0) {
+			//getFile.read(buffers);
+			outToServer.write(buffers);
+			//outToServer.writeUTF(findchecksum(buffers));
+//			while (!inFromServer.readBoolean()) {
+//				//TODO chunk was corrupt, send it again
+//			}
+			size--;
 		}
-		getFile.close();
+		x.close();
+		outToServer.close();
 	}
-	
-	
 }
-
