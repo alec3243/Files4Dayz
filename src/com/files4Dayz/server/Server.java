@@ -1,82 +1,136 @@
 package com.files4Dayz.server;
-import javax.net.ServerSocketFactory;
 import java.net.*;
 import java.io.*;
-
 import static com.files4Dayz.security.Checksum.findchecksum;
+import static com.files4Dayz.security.XorCipher.encryptDecrypt;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 public class Server {
+    private DataInputStream dataReadIn;
+    private DataOutputStream dataSendOut;
+    private FileOutputStream fileToSave;
+    private ServerSocket server;
+    private Socket client;
+    private int failTime;
+    private boolean successVerification = false;
+    private boolean successFileTransfer = true;
+    private boolean keepConnection = true;
+    private final String userName = "admin";
+    private final String password = "abc123";
+    private final File key = new File("key.txt");
 
-	private int port;
-	private Socket client;
-	private DataInputStream inFromClient;
-	private DataOutputStream outToClient;
+    public Server(int port){
+        try {
+            server = new ServerSocket(port);
+            failTime = 3;
+            System.out.println("Server established. Waiting for client to send file");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+    }
+    public void runAsServer() throws IOException {
+        while (keepConnection) {
+            try {
+                client = server.accept();
+                if (client != null) {
+                    System.out.println("Got a caller");
+                }
+                 verifyCredentials(client);
+                 if (successVerification) {
+                	 saveFile(client);
+                 } else {
+                	 keepConnection = false;
+                	 System.out.println("Login failed. Server will be closed");
+                 }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        server.close();
+        client.close();
+    }
+    private void verifyCredentials(Socket client) throws IOException{
+        String userNameClient = null;
+        String passwordClient = null;
+        dataReadIn = new DataInputStream(client.getInputStream());
+        dataSendOut = new DataOutputStream(client.getOutputStream());
 
-	private final String USERNAME = "username";
-	private final String PASSWORD = "password";
+        // verify user name and password
+        while (failTime > 0) {
+            userNameClient = dataReadIn.readUTF();
+            passwordClient = dataReadIn.readUTF();
+            if (!userNameClient.equals(userName) || !passwordClient.equals(password)) {
+                if (failTime > 1) {
+                    dataSendOut.writeUTF("Wrong combination");
+                }
+                failTime -= 1;
+            } else {
+                successVerification = true;
+                System.out.println("Verification success");
+                break;
+            }
+        }
+        // if user name is correct, reset failTime
+        if (successVerification) {
+            dataSendOut.writeUTF("Correct");
+            failTime = 3;
+        }
 
-	public Server(int port) {
-		this.port = port;
-	}
+        if (failTime == 0) {
+            System.out.println("Too many fails. Server will close");
+            dataSendOut.writeUTF("Close");
+        }
+    }
+private void saveFile(Socket client) throws IOException {
 
-	public void runServer() throws IOException {
-		ServerSocketFactory factory = ServerSocketFactory.getDefault();
-		ServerSocket server = factory.createServerSocket(port);
-		if (server == null) {
-			System.out.println("Fail to create server at this port");
-		} else {
-			System.out.println("Server established");
-		}
-		client = server.accept();
-		wrapClientStreams();
-		sendCredentials();
-		while (true) {
-			listen();
-		}
-	}
+        // save as fileName sent from client
+        String fileName = dataReadIn.readUTF();
+        fileToSave = new FileOutputStream(fileName);
 
-	/**
-	 * Listens for the next file transmission.
-	 * @throws IOException
-	 */
-	private void listen() throws IOException {
-		byte[] bytes = null;
-		long size = inFromClient.readLong();
-		final int kilobyte = 1024;
-		byte[] totalBytes = new byte[(int) size*kilobyte];
-		String originalChecksum = null;
-		String currentChecksum = null;
-		for (int i = 0; i < size; i++) {
-			// Read the next chunk
-			bytes = new byte[kilobyte];
-			inFromClient.read(bytes);
-			// Confirm that checksums are equal
-			originalChecksum = inFromClient.readUTF();
-			currentChecksum = findchecksum(bytes);
-			// Checksums are not equal, tell client to send chunk again
-			if (!currentChecksum.equals(originalChecksum)) {
-				outToClient.writeBoolean(false);
-				i--;
-			} else {
-				// Tell client that chunk is valid, continue
-				outToClient.writeBoolean(true);
-				//TODO idk lmfao
-			} }//TODO write the file
-	}
+        // set each reading chunk to be 1024
+        byte[] originalChunk = new byte[1024];
 
+        // decode
+        // byte[] data = decode(buffer);
 
-	private void wrapClientStreams() throws IOException {
-		inFromClient = new DataInputStream(client.getInputStream());
-		outToClient = new DataOutputStream(client.getOutputStream());
-	}
+        int read = 0;
+        while ((read = dataReadIn.read(originalChunk)) > 0) {
+            //String hashedValueFromClient = dataReadIn.readUTF();
+            // base 64 decode
+            //decode(originalChunk);
 
-	private void sendCredentials() throws IOException {
-		outToClient.writeUTF(USERNAME);
-		outToClient.writeUTF(PASSWORD);
-	}
+            // decrypt
+            //encryptDecrypt(originalChunk, key);
 
-	public static void main(String[] args) throws IOException {
-		Server server = new Server(1432);
-		server.runServer();
-	}
+            //if (checkHash(originalChunk, hashedValueFromClient)) {
+                fileToSave.write(originalChunk, 0, read);
+            //} else {
+            //   dataSendOut.writeUTF("wrong");
+            //    failTime -= 1;
+            //    if (failTime == 0) {
+            //        successFileTransfer = false;
+             //       break;
+            //    }
+           // }
+        }
+
+        //if (successFileTransfer) {
+            dataReadIn.close();
+            fileToSave.close();
+        //} else {
+            //System.out.println("Exceed fail time limit! Connection is terminated.");
+        //}
+    }
+private boolean checkHash(byte[] originalChunk, String hashedValueFromClient) {
+        String hashedValueComputed = findchecksum(originalChunk);
+        return hashedValueComputed.equals(hashedValueFromClient);
+    }
 }

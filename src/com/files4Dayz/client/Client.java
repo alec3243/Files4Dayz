@@ -1,8 +1,6 @@
 package com.files4Dayz.client;
 import java.io.*;
 import java.net.*;
-
-import com.files4Dayz.security.Checksum.ByteIterator;
 import com.files4Dayz.security.XorCipher;
 
 import static com.files4Dayz.security.Checksum.findchecksum;
@@ -26,20 +24,12 @@ public class Client {
 	}
 
 	public void main(String[] args) throws UnknownHostException, IOException {
-		file = new File("Key.txt");
-		s = new Socket("127.0.0.1", 1342);
+	//	file = new File("Key.txt");
+		s = new Socket("10.110.180.90", 1342);
 		wrapClientStreams();
 		// Get login details from server
 		getCredentials();
-//		System.out.println("File Location?");
-//		Scanner sc = new Scanner(System.in);
-//		String name = sc.nextLine();
-//		File file = new File(name);
-//		Long check = file.length()/1024;
-//		InputStream is = new FileInputStream(file);
-//		sendFile(is, check);
-//		s.close();
-//		sc.close();
+
 	}
 
 	public void sendFile(File file) throws IOException {
@@ -81,6 +71,7 @@ public class Client {
 			getFile.read(buffers);
 			outToServer.write(XorCipher.encryptDecrypt(buffers, file), 0, buffers.length);
 			outToServer.writeUTF(findchecksum(buffers));
+			
 			while (!inFromServer.readBoolean()) {
 				if (Counter < 3) {
 					Counter++;

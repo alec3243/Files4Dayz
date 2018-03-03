@@ -39,7 +39,7 @@ public class ServerController extends Application {
 		downloadPath = null;
 		//data.add(new FileInfo("test.txt"));
 		server = new Server(port);
-		server.runServer();
+		server.runAsServer();
 	}
 
 	@Override
