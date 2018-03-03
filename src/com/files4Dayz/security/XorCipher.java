@@ -14,8 +14,9 @@ public class XorCipher {
     public static byte[] encryptDecrypt(byte[] inputx, File pass) throws IOException {
     	InputStream is = new FileInputStream(pass);
     	DataInputStream ds = new DataInputStream(is);
-    	byte[] password = new byte[1024];
+    	byte[] password = new byte[inputx.length];
     	ds.read(password);
+    	ds.close();
     	
     	ByteIterator bi1 = new ByteIterator(inputx);
     	ByteIterator bi2 = new ByteIterator(password);
@@ -48,9 +49,20 @@ public class XorCipher {
             	output.append("1");
             }
         }
-
-        return output.toString().getBytes("ISO-8859-1");
+        System.out.println(output.toString());
+        return getBytes(output.toString());
     }
+    
+    public static byte[] getBytes(String x) {
+    	byte[] newbit = new byte[x.length()/8];
+    	for (int i = 0; i < newbit.length; i++ ) {
+    		for (int j = 0; j <= 7; j++) {
+    			newbit[i] |= (byte)((x.charAt(i*8+j) == '1' ? 1 : 0) << (7 - j));
+    		}
+    	}
+    	return newbit;
+    }
+    
     static class ByteIterator implements Iterable<Boolean> {
         private final byte[] check;
 
@@ -84,6 +96,7 @@ public class XorCipher {
         }
 
     }
+    
 }
 
 
