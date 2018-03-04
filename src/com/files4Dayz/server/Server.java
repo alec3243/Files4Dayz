@@ -1,5 +1,6 @@
 package com.files4Dayz.server;
 import com.files4Dayz.application.FileInfo;
+import com.files4Dayz.security.AsciiArmor;
 
 import java.net.*;
 import java.io.*;
@@ -111,7 +112,9 @@ public class Server {
 
             // decrypt
             //encryptDecrypt(originalChunk, key);
-
+            if (dataReadIn.readUTF().equals("armored")) {
+                originalChunk = AsciiArmor.removeArmor(originalChunk);
+            }
             if (checkHash(originalChunk, hashedValueFromClient)) {
                 fileToSave.write(originalChunk, 0, read);
                 System.out.println("correct");

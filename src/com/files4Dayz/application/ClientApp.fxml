@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -45,9 +46,21 @@
          <children>
             <Label fx:id="header" text="Currently connected to " />
             <Label fx:id="ipPort" text="\%IP:PORT%" />
+            <HBox prefHeight="18.0" prefWidth="268.0">
+               <children>
+                  <Label prefHeight="17.0" prefWidth="181.0" text="Enable ASCII Armoring?" />
+                  <CheckBox fx:id="armoringToggle" mnemonicParsing="false" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets top="45.0" />
+               </VBox.margin>
+            </HBox>
             <HBox prefHeight="27.0" prefWidth="268.0">
                <children>
-                  <Label prefHeight="33.0" prefWidth="199.0" text="How many chunks to corrupt?" HBox.hgrow="ALWAYS" />
+                  <Label prefHeight="27.0" prefWidth="165.0" text="How many chunks to corrupt?" HBox.hgrow="ALWAYS" />
                   <TextField fx:id="corruptedCount" prefHeight="31.0" prefWidth="30.0">
                      <HBox.margin>
                         <Insets left="10.0" />
@@ -63,7 +76,7 @@
                   <Font size="21.0" />
                </font>
                <VBox.margin>
-                  <Insets left="65.0" top="50.0" />
+                  <Insets left="65.0" top="45.0" />
                </VBox.margin>
             </Button>
          </children>

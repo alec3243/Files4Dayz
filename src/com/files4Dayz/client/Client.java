@@ -2,6 +2,7 @@ package com.files4Dayz.client;
 import java.io.*;
 import java.net.*;
 
+import com.files4Dayz.security.AsciiArmor;
 import com.files4Dayz.security.Checksum;
 import java.util.*;
 
@@ -38,11 +39,11 @@ public class Client {
 //		sc.close();
 //	}
 
-	public void sendFile(File file) throws IOException {
+	public void sendFile(File file, boolean isArmored) throws IOException {
 		int check = (int)(file.length()/1024) + 1;
 		System.out.println(file.length());
 		FileInputStream is = new FileInputStream(file);
-		sendFile(is,check, file.getName());
+		sendFile(is,check, file.getName(), isArmored);
 	}
 
 	public String getUsername() {
@@ -72,7 +73,7 @@ public class Client {
 		outToServer = new DataOutputStream(new BufferedOutputStream(s.getOutputStream()));
 	}
 	
-	private void sendFile(FileInputStream x, int size, String filename) throws IOException {
+	private void sendFile(FileInputStream x, int size, String filename, boolean isArmored) throws IOException {
 		byte[] buffers = new byte[1024];
 		System.out.println(filename);
 		System.out.println(size);
@@ -82,14 +83,26 @@ public class Client {
 		byte[] corrupted = new byte[1024];
 		while (x.read(buffers) > 0) {
 			//getFile.read(buffers);
+
 			if (corruptedChunks > 0) {
 				for (int i = 0; i < corrupted.length; i++) {
 					corrupted[i] = (byte) (i % Byte.MAX_VALUE);
 				}
+				if (isArmored) {
+					corrupted = AsciiArmor.armor(corrupted);
+				}
 				outToServer.write(corrupted);
 				corruptedChunks--;
 			} else {
+				if (isArmored) {
+					buffers = AsciiArmor.armor(buffers);
+				}
 				outToServer.write(buffers);
+			}
+			if (isArmored) {
+				outToServer.writeUTF("armored");
+			} else {
+				outToServer.writeUTF("not armored");
 			}
 			outToServer.writeUTF(findchecksum(buffers));
 			outToServer.flush();
@@ -104,7 +117,6 @@ public class Client {
 			size--;
 		}
 		x.close();
-		outToServer.close();
 	}
 
 	public void sendCorrupted(int i) {

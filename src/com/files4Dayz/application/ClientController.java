@@ -74,14 +74,16 @@ public class ClientController extends Application {
 		fileTable.setItems(data);
 
 		final TextField corruptedCount = (TextField) root.lookup("#corruptedCount");
+
 		final Button sendButton = (Button) root.lookup("#sendButton");
 		sendButton.setOnAction((event) -> {
+			final boolean isArmored = ((CheckBox) root.lookup("#armoringToggle")).isSelected();
 			try {
 				if (!corruptedCount.getText().isEmpty()) {
 					int corrupted = Integer.parseInt(corruptedCount.getText());
 					client.sendCorrupted(corrupted);
 				}
-				sendFiles();
+				sendFiles(isArmored);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -155,11 +157,11 @@ public class ClientController extends Application {
 		}
 	}
 
-	private void sendFiles() throws IOException {
+	private void sendFiles(boolean isArmored) throws IOException {
 		// TODO tell Client to send files
 		File[] selected = fileTable.getSelectionModel().getSelectedItems().toArray(new File[0]);
 		for (int i = 0; i < selected.length; i++) {
-			client.sendFile(selected[i]);
+			client.sendFile(selected[i], isArmored);
 		}
 		// TODO check if file sent successfully
 		//TODO remove successfully transferred files from UI
