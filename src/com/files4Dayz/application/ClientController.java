@@ -45,6 +45,8 @@ public class ClientController extends Application {
 		client = new Client(ip, port);
 	}
 
+	public Client getClient() { return client; }
+
 	public String getUserName() {
 		return client.getUsername();
 	}
@@ -71,9 +73,14 @@ public class ClientController extends Application {
 
 		fileTable.setItems(data);
 
+		final TextField corruptedCount = (TextField) root.lookup("#corruptedCount");
 		final Button sendButton = (Button) root.lookup("#sendButton");
 		sendButton.setOnAction((event) -> {
 			try {
+				if (!corruptedCount.getText().isEmpty()) {
+					int corrupted = Integer.parseInt(corruptedCount.getText());
+					client.sendCorrupted(corrupted);
+				}
 				sendFiles();
 			} catch (IOException e) {
 				e.printStackTrace();

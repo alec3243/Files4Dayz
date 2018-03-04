@@ -6,10 +6,8 @@ import java.util.*;
 public class Test {
 	public static void main(String[] args) throws IOException {
 		Client c = new Client("192.168.0.2", 1342);
-//		System.out.println("File Location?");
-//		Scanner sc = new Scanner(System.in);
-//		String name = sc.nextLine();
-//		File file = new File(name);
-//		c.sendFile(file);
+		System.out.println("File Location?");
+		File file = new File("wtf.jpg");
+		c.sendFile(file);
 	}
 }

@@ -38,17 +38,17 @@ public class LoginController extends Application {
         final Button loginButton = (Button) loader.getNamespace().get("loginButton");
         final Button cancelButton = (Button) loader.getNamespace().get("cancelButton");
         loginButton.setOnAction((event) -> {
-            final String userName = ((TextField) loader.getNamespace().get("usernameField")).getText();
+            final String username = ((TextField) loader.getNamespace().get("usernameField")).getText();
             final String password = ((TextField) loader.getNamespace().get("passwordField")).getText();
-            if (userName.equals(realUser) && password.equals(realPass)) {
-                try {
+            try {
+                if (client.getClient().sendCredentials(username,password)) {
                     client.start(new Stage());
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    primaryStage.close();
+                } else {
+                    warningLabel.setVisible(true);
                 }
-                primaryStage.close();
-            } else {
-                warningLabel.setVisible(true);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
         cancelButton.setOnAction((event -> primaryStage.close()));

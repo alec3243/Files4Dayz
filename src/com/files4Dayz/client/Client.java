@@ -4,11 +4,14 @@ import java.net.*;
 
 import com.files4Dayz.security.Checksum;
 import java.util.*;
+
+import static com.files4Dayz.security.Checksum.findchecksum;
+
 public class Client {
 	private DataOutputStream outToServer;
 	private DataInputStream inFromServer;
 	private static Socket s;
-
+	private int corruptedChunks;
 	private String username;
 	private String password;
 
@@ -17,7 +20,8 @@ public class Client {
 		s = new Socket(ip, port);
 		wrapClientStreams();
 		// Get login details from server
-		getCredentials();
+		//getCredentials();
+		corruptedChunks = 0;
 	}
 
 //	public static void main(String[] args) throws UnknownHostException, IOException {
@@ -49,22 +53,18 @@ public class Client {
 		return password;
 	}
 
-	private void getCredentials() throws IOException {
-		Scanner sc = new Scanner(System.in);
-		String un, pw;
+	public boolean sendCredentials(String user, String pass) throws IOException {
 		String message = null;
-		while (message == null || message.equals("Wrong combination")) {
-			System.out.println("Enter username:");
-			un = sc.nextLine();
-			outToServer.writeUTF(un);
-			outToServer.flush();
-			System.out.println("Enter password:");
-			pw = sc.nextLine();
-			outToServer.writeUTF(pw);
-			outToServer.flush();
-			message = inFromServer.readUTF();
+		outToServer.writeUTF(user);
+		outToServer.flush();
+		outToServer.writeUTF(pass);
+		outToServer.flush();
+		message = inFromServer.readUTF();
+		if (message.equals("Wrong combination")) {
+			return false;
+		} else {
+			return true;
 		}
-		sc.close();
 	}
 
 	private void wrapClientStreams() throws IOException {
@@ -78,16 +78,36 @@ public class Client {
 		System.out.println(size);
 		outToServer.writeUTF(filename);
 		outToServer.flush();
+		int count = 1;
+		byte[] corrupted = new byte[1024];
 		while (x.read(buffers) > 0) {
 			//getFile.read(buffers);
-			outToServer.write(buffers);
-			//outToServer.writeUTF(findchecksum(buffers));
-//			while (!inFromServer.readBoolean()) {
-//				//TODO chunk was corrupt, send it again
-//			}
+			if (corruptedChunks > 0) {
+				for (int i = 0; i < corrupted.length; i++) {
+					corrupted[i] = (byte) (i % Byte.MAX_VALUE);
+				}
+				outToServer.write(corrupted);
+				corruptedChunks--;
+			} else {
+				outToServer.write(buffers);
+			}
+			outToServer.writeUTF(findchecksum(buffers));
+			outToServer.flush();
+			String input = null;
+			while ((input = inFromServer.readUTF()).equals("wrong")) {
+				System.out.println("Chunk is resent");
+				outToServer.write(buffers);
+				outToServer.writeUTF(findchecksum(buffers));
+				outToServer.flush();
+			}
+			System.out.println(input);
 			size--;
 		}
 		x.close();
 		outToServer.close();
+	}
+
+	public void sendCorrupted(int i) {
+		corruptedChunks = i;
 	}
 }

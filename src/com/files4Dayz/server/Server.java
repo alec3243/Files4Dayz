@@ -99,7 +99,7 @@ private void saveFile(Socket client) throws IOException {
         byte[] originalChunk = new byte[1024];
 
         // decode
-        // byte[] data = decode(buffer);
+        //byte[] data = decode(buffer);
 
         int read = 0;
         while ((read = dataReadIn.read(originalChunk)) > 0) {

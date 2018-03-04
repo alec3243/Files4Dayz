@@ -49,11 +49,19 @@
          <children>
             <Label fx:id="header" text="Currently connected to " />
             <Label fx:id="ipPort" text="\%IP:PORT%" />
-            <Label text="When ready, push the send button to deliver the selected files" wrapText="true">
+            <HBox prefHeight="27.0" prefWidth="268.0">
+               <children>
+                  <Label prefHeight="33.0" prefWidth="199.0" text="How many chunks to corrupt?" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="corruptedCount" prefHeight="31.0" prefWidth="30.0">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
                <VBox.margin>
-                  <Insets top="30.0" />
+                  <Insets top="45.0" />
                </VBox.margin>
-            </Label>
+            </HBox>
             <Button fx:id="sendButton" mnemonicParsing="false" text="Send Files" wrapText="true">
                <font>
                   <Font size="21.0" />

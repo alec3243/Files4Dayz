@@ -1,6 +1,5 @@
 package com.files4Dayz.application;
 
-//import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -16,7 +15,7 @@ public class FileInfo extends File {
 
     public FileInfo(String pathname) {
         super(pathname);
-//        extension = FilenameUtils.getExtension(pathname);
+        extension = FilenameUtils.getExtension(pathname);
         size = this.length();
     }
 
