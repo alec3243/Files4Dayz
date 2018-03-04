@@ -37,7 +37,6 @@ public class ServerController extends Application {
 
 	public ServerController(int port) throws IOException {
 		downloadPath = null;
-		//data.add(new FileInfo("test.txt"));
 		server = new Server(port);
 		server.runAsServer();
 	}
@@ -73,6 +72,15 @@ public class ServerController extends Application {
 
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		System.out.println("Server window should be visible");
+		listen();
+	}
+
+	private void listen() throws IOException {
+		FileInfo file = null;
+		while ((file = server.saveFile()) != null) {
+			data.add(file);
+		}
 	}
 
 	public void addAll(File... files) {

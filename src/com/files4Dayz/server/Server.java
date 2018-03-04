@@ -1,4 +1,6 @@
 package com.files4Dayz.server;
+import com.files4Dayz.application.FileInfo;
+
 import java.net.*;
 import java.io.*;
 import static com.files4Dayz.security.Checksum.findchecksum;
@@ -37,27 +39,23 @@ public class Server {
         
     }
     public void runAsServer() throws IOException {
-        while (keepConnection) {
-            try {
-                client = server.accept();
-                if (client != null) {
-                    System.out.println("Got a caller");
+        try {
+            client = server.accept();
+            if (client != null) {
+                System.out.println("Got a caller"); }
+                verifyCredentials();
+            if (successVerification) {
+                System.out.println("Login success");
+                } else {
+                keepConnection = false;
+                System.out.println("Login failed. Server will be closed");
                 }
-                 verifyCredentials(client);
-                 if (successVerification) {
-                	 saveFile(client);
-                 } else {
-                	 keepConnection = false;
-                	 System.out.println("Login failed. Server will be closed");
-                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        server.close();
-        client.close();
+        } catch (IOException e) {
+            e.printStackTrace(); }
+
     }
-    private void verifyCredentials(Socket client) throws IOException{
+
+    private void verifyCredentials() throws IOException{
         String userNameClient = null;
         String passwordClient = null;
         dataReadIn = new DataInputStream(client.getInputStream());
@@ -70,6 +68,7 @@ public class Server {
             if (!userNameClient.equals(userName) || !passwordClient.equals(password)) {
                 if (failTime > 1) {
                     dataSendOut.writeUTF("Wrong combination");
+                    System.out.println("shits wrong lmao");
                 }
                 failTime -= 1;
             } else {
@@ -89,7 +88,7 @@ public class Server {
             dataSendOut.writeUTF("Close");
         }
     }
-private void saveFile(Socket client) throws IOException {
+    public FileInfo saveFile() throws IOException {
 
         // save as fileName sent from client
         String fileName = dataReadIn.readUTF();
@@ -99,35 +98,42 @@ private void saveFile(Socket client) throws IOException {
         byte[] originalChunk = new byte[1024];
 
         // decode
-        //byte[] data = decode(buffer);
+        // byte[] data = decode(buffer);
 
         int read = 0;
         while ((read = dataReadIn.read(originalChunk)) > 0) {
-            //String hashedValueFromClient = dataReadIn.readUTF();
+            String hashedValueFromClient = dataReadIn.readUTF();
+           
             // base 64 decode
             //decode(originalChunk);
 
             // decrypt
             //encryptDecrypt(originalChunk, key);
 
-            //if (checkHash(originalChunk, hashedValueFromClient)) {
+            if (checkHash(originalChunk, hashedValueFromClient)) {
                 fileToSave.write(originalChunk, 0, read);
-            //} else {
-            //   dataSendOut.writeUTF("wrong");
-            //    failTime -= 1;
-            //    if (failTime == 0) {
-            //        successFileTransfer = false;
-             //       break;
-            //    }
-           // }
+                System.out.println("correct");
+                dataSendOut.writeUTF("correct");
+            } else {
+               dataSendOut.writeUTF("wrong");
+               System.out.println("hash wrong");
+                failTime -= 1;
+                if (failTime == 0) {
+                    successFileTransfer = false;
+                    break;
+                }
+            }
         }
 
-        //if (successFileTransfer) {
+        if (successFileTransfer) {
             dataReadIn.close();
             fileToSave.close();
-        //} else {
-            //System.out.println("Exceed fail time limit! Connection is terminated.");
-        //}
+            FileInfo f = new FileInfo(fileName);
+            return f;
+        } else {
+            System.out.println("Exceed fail time limit! Connection is terminated.");
+            return null;
+        }
     }
 private boolean checkHash(byte[] originalChunk, String hashedValueFromClient) {
         String hashedValueComputed = findchecksum(originalChunk);

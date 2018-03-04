@@ -52,8 +52,6 @@ public class LoginController extends Application {
             }
         });
         cancelButton.setOnAction((event -> primaryStage.close()));
-
-
         primaryStage.setScene(scene);
         primaryStage.show();
     }
