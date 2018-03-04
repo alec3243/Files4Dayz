@@ -98,11 +98,14 @@ public class Client {
 				corruptedChunks--;
 			} else {
 				if (isArmored) {
+					System.out.println("Armoring...");
 					buffers = AsciiArmor.armor(buffers);
+					System.out.println("ARMORED.");
 				}
 				outToServer.write(buffers);
 			}
 			outToServer.writeUTF(findchecksum(buffers));
+			System.out.println("Sent hash of chunk");
 			outToServer.flush();
 			String input = null;
 			while ((input = inFromServer.readUTF()).equals("wrong")) {

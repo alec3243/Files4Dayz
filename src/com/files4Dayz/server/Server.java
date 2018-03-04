@@ -112,8 +112,10 @@ public class Server {
             //encryptDecrypt(originalChunk, key);
             if (isArmored) {
                 originalChunk = AsciiArmor.removeArmor(originalChunk);
+                System.out.println("Dearmored");
             }
             String hashedValueFromClient = dataReadIn.readUTF();
+            System.out.println("Successful read of hash");
             if (checkHash(originalChunk, hashedValueFromClient)) {
                 fileToSave.write(originalChunk, 0, read);
                 System.out.println("correct");
