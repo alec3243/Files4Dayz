@@ -75,11 +75,14 @@ public class Client {
 	
 	private void sendFile(FileInputStream x, int size, String filename, boolean isArmored) throws IOException {
 		byte[] buffers = new byte[1024];
-		System.out.println(filename);
-		System.out.println(size);
 		outToServer.writeUTF(filename);
 		outToServer.flush();
-		int count = 1;
+		if (isArmored) {
+			outToServer.writeUTF("armored");
+		} else {
+			outToServer.writeUTF("not armored");
+		}
+		outToServer.flush();
 		byte[] corrupted = new byte[1024];
 		while (x.read(buffers) > 0) {
 			//getFile.read(buffers);
@@ -98,11 +101,6 @@ public class Client {
 					buffers = AsciiArmor.armor(buffers);
 				}
 				outToServer.write(buffers);
-			}
-			if (isArmored) {
-				outToServer.writeUTF("armored");
-			} else {
-				outToServer.writeUTF("not armored");
 			}
 			outToServer.writeUTF(findchecksum(buffers));
 			outToServer.flush();

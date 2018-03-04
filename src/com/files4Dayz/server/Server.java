@@ -96,25 +96,24 @@ public class Server {
         // save as fileName sent from client
         String fileName = dataReadIn.readUTF();
         fileToSave = new FileOutputStream(fileName);
-
+        boolean isArmored = false;
+        if (dataReadIn.readUTF().equals("armored")) {
+            isArmored = true;
+        }
         // set each reading chunk to be 1024
         byte[] originalChunk = new byte[1024];
-
         // decode
         // byte[] data = decode(buffer);
-
         int read = 0;
         while ((read = dataReadIn.read(originalChunk)) > 0) {
-            String hashedValueFromClient = dataReadIn.readUTF();
-           
             // base 64 decode
             //decode(originalChunk);
-
             // decrypt
             //encryptDecrypt(originalChunk, key);
-            if (dataReadIn.readUTF().equals("armored")) {
+            if (isArmored) {
                 originalChunk = AsciiArmor.removeArmor(originalChunk);
             }
+            String hashedValueFromClient = dataReadIn.readUTF();
             if (checkHash(originalChunk, hashedValueFromClient)) {
                 fileToSave.write(originalChunk, 0, read);
                 System.out.println("correct");
@@ -129,14 +128,13 @@ public class Server {
                 }
             }
         }
-
+        fileToSave.close();
+        System.out.println(successFileTransfer);
         if (successFileTransfer) {
-            dataReadIn.close();
-            fileToSave.close();
-            FileInfo f = new FileInfo(fileName);
-            return f;
+            return new FileInfo(fileName);
         } else {
             System.out.println("Exceed fail time limit! Connection is terminated.");
+            client.close();
             return null;
         }
     }
