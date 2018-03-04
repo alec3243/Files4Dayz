@@ -3,19 +3,16 @@
   <component name="ChangeListManager">
     <list default="true" id="4cc18f1e-c8be-4c21-b0a8-667cee32fef8" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/bin/com/files4Dayz/application/ClientApp.fxml" afterPath="$PROJECT_DIR$/bin/com/files4Dayz/application/ClientApp.fxml" />
-      <change beforePath="$PROJECT_DIR$/bin/com/files4Dayz/application/LauncherController$1.class" afterPath="$PROJECT_DIR$/bin/com/files4Dayz/application/LauncherController$1.class" />
-      <change beforePath="$PROJECT_DIR$/bin/com/files4Dayz/application/LauncherController$Selection.class" afterPath="$PROJECT_DIR$/bin/com/files4Dayz/application/LauncherController$Selection.class" />
-      <change beforePath="$PROJECT_DIR$/bin/com/files4Dayz/application/LauncherController.class" afterPath="$PROJECT_DIR$/bin/com/files4Dayz/application/LauncherController.class" />
-      <change beforePath="$PROJECT_DIR$/bin/com/files4Dayz/application/LoginController.class" afterPath="$PROJECT_DIR$/bin/com/files4Dayz/application/LoginController.class" />
+      <change beforePath="$PROJECT_DIR$/JPG.jpg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/bin/com/files4Dayz/application/ClientController.class" afterPath="$PROJECT_DIR$/bin/com/files4Dayz/application/ClientController.class" />
+      <change beforePath="$PROJECT_DIR$/bin/com/files4Dayz/application/ServerApp.fxml" afterPath="$PROJECT_DIR$/bin/com/files4Dayz/application/ServerApp.fxml" />
       <change beforePath="$PROJECT_DIR$/bin/com/files4Dayz/application/ServerController.class" afterPath="$PROJECT_DIR$/bin/com/files4Dayz/application/ServerController.class" />
-      <change beforePath="$PROJECT_DIR$/bin/com/files4Dayz/application/SettingsController.class" afterPath="$PROJECT_DIR$/bin/com/files4Dayz/application/SettingsController.class" />
       <change beforePath="$PROJECT_DIR$/bin/com/files4Dayz/server/Server.class" afterPath="$PROJECT_DIR$/bin/com/files4Dayz/server/Server.class" />
-      <change beforePath="$PROJECT_DIR$/src/com/files4Dayz/application/ClientApp.fxml" afterPath="$PROJECT_DIR$/src/com/files4Dayz/application/ClientApp.fxml" />
-      <change beforePath="$PROJECT_DIR$/src/com/files4Dayz/application/LoginController.java" afterPath="$PROJECT_DIR$/src/com/files4Dayz/application/LoginController.java" />
+      <change beforePath="$PROJECT_DIR$/src/com/files4Dayz/application/ClientController.java" afterPath="$PROJECT_DIR$/src/com/files4Dayz/application/ClientController.java" />
       <change beforePath="$PROJECT_DIR$/src/com/files4Dayz/application/ServerApp.fxml" afterPath="$PROJECT_DIR$/src/com/files4Dayz/application/ServerApp.fxml" />
       <change beforePath="$PROJECT_DIR$/src/com/files4Dayz/application/ServerController.java" afterPath="$PROJECT_DIR$/src/com/files4Dayz/application/ServerController.java" />
       <change beforePath="$PROJECT_DIR$/src/com/files4Dayz/server/Server.java" afterPath="$PROJECT_DIR$/src/com/files4Dayz/server/Server.java" />
+      <change beforePath="$PROJECT_DIR$/wtf.jpg" afterPath="" />
     </list>
     <ignored path="$PROJECT_DIR$/bin/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -27,29 +24,15 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="Client.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/client/Client.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1071">
-              <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-              <folding>
-                <element signature="e#1343#1344#0" expanded="true" />
-                <element signature="e#1365#1366#0" expanded="true" />
-                <element signature="e#1397#1398#0" expanded="true" />
-                <element signature="e#1419#1420#0" expanded="true" />
-                <element signature="e#2995#2996#0" expanded="true" />
-                <element signature="e#3021#3022#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="ServerController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/application/ServerController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="113">
-              <caret line="47" column="0" lean-forward="false" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="-329">
+              <caret line="86" column="25" lean-forward="false" selection-start-line="86" selection-start-column="25" selection-end-line="86" selection-end-column="25" />
+              <folding>
+                <element signature="e#2794#2795#0" expanded="true" />
+                <element signature="e#2833#2834#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -58,7 +41,7 @@
         <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/application/LoginController.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="919">
-              <caret line="58" column="1" lean-forward="true" selection-start-line="58" selection-start-column="1" selection-end-line="58" selection-end-column="1" />
+              <caret line="58" column="1" lean-forward="false" selection-start-line="58" selection-start-column="1" selection-end-line="58" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -67,44 +50,28 @@
       <file leaf-file-name="ClientController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/application/ClientController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="95">
-              <caret line="61" column="0" lean-forward="false" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
+            <state relative-caret-position="263">
+              <caret line="57" column="13" lean-forward="false" selection-start-line="57" selection-start-column="13" selection-end-line="57" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ClientApp.fxml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/application/ClientApp.fxml">
-          <provider editor-type-id="JavaFX-Scene-Builder">
-            <state />
-          </provider>
+      <file leaf-file-name="XorCipher.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/security/XorCipher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="14" column="24" lean-forward="true" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="24" />
+            <state relative-caret-position="147">
+              <caret line="14" column="1" lean-forward="false" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ServerApp.fxml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/application/ServerApp.fxml">
-          <provider editor-type-id="JavaFX-Scene-Builder">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="63">
-              <caret line="3" column="32" lean-forward="false" selection-start-line="3" selection-start-column="32" selection-end-line="3" selection-end-column="32" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Server.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Server.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/server/Server.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="882">
-              <caret line="55" column="0" lean-forward="false" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+            <state relative-caret-position="473">
+              <caret line="108" column="29" lean-forward="true" selection-start-line="108" selection-start-column="29" selection-end-line="108" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -123,8 +90,8 @@
       <file leaf-file-name="LauncherController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/application/LauncherController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="535">
-              <caret line="156" column="0" lean-forward="false" selection-start-line="156" selection-start-column="0" selection-end-line="156" selection-end-column="0" />
+            <state relative-caret-position="526">
+              <caret line="156" column="16" lean-forward="false" selection-start-line="156" selection-start-column="16" selection-end-line="156" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -141,6 +108,9 @@
     </option>
   </component>
   <component name="FindInProjectRecents">
+    <findStrings>
+      <find>Server</find>
+    </findStrings>
     <dirStrings>
       <dir>D:\Users\Alec\workspace\Files4Dayz\src</dir>
     </dirStrings>
@@ -161,18 +131,18 @@
         <option value="$PROJECT_DIR$/src/com/files4Dayz/application/FileTranserApp.fxml" />
         <option value="$PROJECT_DIR$/src/com/files4Dayz/application/FileTransferController.java" />
         <option value="$PROJECT_DIR$/src/com/files4Dayz/checksum/Checksum.java" />
-        <option value="$PROJECT_DIR$/src/com/files4Dayz/application/LauncherController.java" />
         <option value="$PROJECT_DIR$/src/com/files4Dayz/security/XorCipher.java" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/com/files4Dayz/client/Test.java" />
         <option value="$PROJECT_DIR$/src/com/files4Dayz/application/FileInfo.java" />
         <option value="$PROJECT_DIR$/src/com/files4Dayz/client/Client.java" />
-        <option value="$PROJECT_DIR$/src/com/files4Dayz/application/ClientController.java" />
         <option value="$PROJECT_DIR$/src/com/files4Dayz/application/LoginController.java" />
+        <option value="$PROJECT_DIR$/src/com/files4Dayz/application/ClientApp.fxml" />
+        <option value="$PROJECT_DIR$/src/com/files4Dayz/application/ClientController.java" />
+        <option value="$PROJECT_DIR$/src/com/files4Dayz/application/ServerApp.fxml" />
+        <option value="$PROJECT_DIR$/src/com/files4Dayz/application/LauncherController.java" />
         <option value="$PROJECT_DIR$/src/com/files4Dayz/server/Server.java" />
         <option value="$PROJECT_DIR$/src/com/files4Dayz/application/ServerController.java" />
-        <option value="$PROJECT_DIR$/src/com/files4Dayz/application/ClientApp.fxml" />
-        <option value="$PROJECT_DIR$/src/com/files4Dayz/application/ServerApp.fxml" />
       </list>
     </option>
   </component>
@@ -458,7 +428,7 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15806806" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31394073" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -520,28 +490,45 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/com/files4Dayz/application/ServerController.java</url>
-          <line>47</line>
-          <properties />
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/com/files4Dayz/application/ClientController.java</url>
           <line>59</line>
           <properties />
           <option name="timeStamp" value="24" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/files4Dayz/server/Server.java</url>
+          <line>35</line>
+          <properties />
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="25" />
+      <option name="time" value="28" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
-        <watch expression="loader.load()" language="JAVA" />
+        <watch expression="primaryStage" language="JAVA" />
+        <watch expression="loader" language="JAVA" />
+        <watch expression="getClass().getResource(&quot;ServerApp.fxml&quot;)" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="watch">
+      <expression>
+        <expression-string>getClass().getResource(&quot;ServerApp.fxml&quot;)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>loader</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>primaryStage</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>loader.load()</expression-string>
         <language-id>JAVA</language-id>
@@ -550,22 +537,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/application/LoginController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/application/ClientController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="479">
-          <caret line="77" column="37" lean-forward="false" selection-start-line="77" selection-start-column="37" selection-end-line="77" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/application/LauncherController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="564">
@@ -604,7 +575,7 @@
         <state relative-caret-position="84">
           <caret line="7" column="13" lean-forward="false" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -613,7 +584,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="462">
           <caret line="38" column="28" lean-forward="false" selection-start-line="38" selection-start-column="28" selection-end-line="38" selection-end-column="28" />
-          <folding />
+          <folding>
+            <element signature="e#2794#2795#0" expanded="true" />
+            <element signature="e#2833#2834#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -622,12 +596,12 @@
         <state relative-caret-position="619">
           <caret line="88" column="9" lean-forward="true" selection-start-line="88" selection-start-column="9" selection-end-line="88" selection-end-column="9" />
           <folding>
-            <element signature="e#1343#1344#0" expanded="true" />
-            <element signature="e#1365#1366#0" expanded="true" />
-            <element signature="e#1397#1398#0" expanded="true" />
-            <element signature="e#1419#1420#0" expanded="true" />
-            <element signature="e#2995#2996#0" expanded="true" />
-            <element signature="e#3021#3022#0" expanded="true" />
+            <element signature="e#1343#1344#0" expanded="false" />
+            <element signature="e#1365#1366#0" expanded="false" />
+            <element signature="e#1397#1398#0" expanded="false" />
+            <element signature="e#1419#1420#0" expanded="false" />
+            <element signature="e#2995#2996#0" expanded="false" />
+            <element signature="e#3021#3022#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -645,12 +619,12 @@
         <state relative-caret-position="84">
           <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
           <folding>
-            <element signature="e#1343#1344#0" expanded="true" />
-            <element signature="e#1365#1366#0" expanded="true" />
-            <element signature="e#1397#1398#0" expanded="true" />
-            <element signature="e#1419#1420#0" expanded="true" />
-            <element signature="e#2995#2996#0" expanded="true" />
-            <element signature="e#3021#3022#0" expanded="true" />
+            <element signature="e#1343#1344#0" expanded="false" />
+            <element signature="e#1365#1366#0" expanded="false" />
+            <element signature="e#1397#1398#0" expanded="false" />
+            <element signature="e#1419#1420#0" expanded="false" />
+            <element signature="e#2995#2996#0" expanded="false" />
+            <element signature="e#3021#3022#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -718,14 +692,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/security/XorCipher.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="14" column="1" lean-forward="true" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/wtf.jpg">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -744,7 +710,7 @@
         <state relative-caret-position="21">
           <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -754,7 +720,7 @@
         <state relative-caret-position="147">
           <caret line="7" column="51" lean-forward="true" selection-start-line="7" selection-start-column="51" selection-end-line="7" selection-end-column="51" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -788,21 +754,80 @@
         <state relative-caret-position="-1071">
           <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
           <folding>
-            <element signature="e#1343#1344#0" expanded="true" />
-            <element signature="e#1365#1366#0" expanded="true" />
-            <element signature="e#1397#1398#0" expanded="true" />
-            <element signature="e#1419#1420#0" expanded="true" />
-            <element signature="e#2995#2996#0" expanded="true" />
-            <element signature="e#3021#3022#0" expanded="true" />
+            <element signature="e#1343#1344#0" expanded="false" />
+            <element signature="e#1365#1366#0" expanded="false" />
+            <element signature="e#1397#1398#0" expanded="false" />
+            <element signature="e#1419#1420#0" expanded="false" />
+            <element signature="e#2995#2996#0" expanded="false" />
+            <element signature="e#3021#3022#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/server/Server.java">
+    <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/application/LoginController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="882">
-          <caret line="55" column="0" lean-forward="false" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+        <state relative-caret-position="919">
+          <caret line="58" column="1" lean-forward="false" selection-start-line="58" selection-start-column="1" selection-end-line="58" selection-end-column="1" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/application/ClientApp.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="7" column="248" lean-forward="true" selection-start-line="7" selection-start-column="248" selection-end-line="7" selection-end-column="248" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/security/XorCipher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="14" column="1" lean-forward="false" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_161/javafx-src.zip!/javafx/stage/Stage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="722" column="0" lean-forward="false" selection-start-line="722" selection-start-column="0" selection-end-line="722" selection-end-column="0" />
+          <folding>
+            <element signature="e#25545#25546#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/application/ClientController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="263">
+          <caret line="57" column="13" lean-forward="false" selection-start-line="57" selection-start-column="13" selection-end-line="57" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_161/javafx-src.zip!/javafx/event/Event.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="422">
+          <caret line="197" column="0" lean-forward="false" selection-start-line="197" selection-start-column="0" selection-end-line="197" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_161/javafx-src.zip!/javafx/fxml/FXMLLoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="2057" column="0" lean-forward="false" selection-start-line="2057" selection-start-column="0" selection-end-line="2057" selection-end-column="0" />
+          <folding>
+            <element signature="e#71768#71776#0" expanded="false" />
+            <element signature="e#71835#71853#0" expanded="false" />
+            <element signature="e#79010#79011#0" expanded="false" />
+            <element signature="e#79248#79249#0" expanded="false" />
+            <element signature="e#79295#79296#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -816,59 +841,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/application/LauncherController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="535">
-          <caret line="156" column="0" lean-forward="false" selection-start-line="156" selection-start-column="0" selection-end-line="156" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_161/javafx-src.zip!/javafx/event/Event.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="422">
-          <caret line="197" column="0" lean-forward="false" selection-start-line="197" selection-start-column="0" selection-end-line="197" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/application/LoginController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="919">
-          <caret line="58" column="1" lean-forward="true" selection-start-line="58" selection-start-column="1" selection-end-line="58" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/application/ServerController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="113">
-          <caret line="47" column="0" lean-forward="false" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_161/javafx-src.zip!/javafx/fxml/FXMLLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="2408" column="0" lean-forward="false" selection-start-line="2408" selection-start-column="0" selection-end-line="2408" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/application/ClientController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="61" column="0" lean-forward="false" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/application/ClientApp.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="14" column="24" lean-forward="true" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="24" />
+        <state relative-caret-position="526">
+          <caret line="156" column="16" lean-forward="false" selection-start-line="156" selection-start-column="16" selection-end-line="156" selection-end-column="16" />
           <folding />
         </state>
       </provider>
@@ -878,8 +852,32 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="63">
-          <caret line="3" column="32" lean-forward="false" selection-start-line="3" selection-start-column="32" selection-end-line="3" selection-end-column="32" />
+        <state relative-caret-position="546">
+          <caret line="26" column="108" lean-forward="false" selection-start-line="26" selection-start-column="108" selection-end-line="26" selection-end-column="108" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/JPG.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/application/ServerController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-329">
+          <caret line="86" column="25" lean-forward="false" selection-start-line="86" selection-start-column="25" selection-end-line="86" selection-end-column="25" />
+          <folding>
+            <element signature="e#2794#2795#0" expanded="true" />
+            <element signature="e#2833#2834#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/files4Dayz/server/Server.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="473">
+          <caret line="108" column="29" lean-forward="true" selection-start-line="108" selection-start-column="29" selection-end-line="108" selection-end-column="29" />
           <folding />
         </state>
       </provider>

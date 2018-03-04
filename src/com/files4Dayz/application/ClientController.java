@@ -34,10 +34,10 @@ public class ClientController extends Application {
 	private String ip;
 	private int port;
 
-	private ClientController() {
+	public ClientController() {
 	}
 
-	ClientController(String ip, int port) throws IOException {
+	public ClientController(String ip, int port) throws IOException {
 		data = FXCollections.observableArrayList();
 		this.ip = ip;
 		this.port = port;

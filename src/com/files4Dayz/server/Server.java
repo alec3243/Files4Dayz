@@ -29,12 +29,14 @@ public class Server {
     private final File key = new File("key.txt");
 
     public Server(int port){
-        try {
-            server = new ServerSocket(port);
-            failTime = 3;
-            System.out.println("Server established. Waiting for client to send file");
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (!(port == 0)) {
+            try {
+                server = new ServerSocket(port);
+                failTime = 3;
+                System.out.println("Server established. Waiting for client to send file");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         
     }

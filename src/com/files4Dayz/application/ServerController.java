@@ -35,6 +35,10 @@ public class ServerController extends Application {
 	@FXML
 	private TableColumn sizeCol;
 
+	public ServerController() throws IOException {
+
+	}
+
 	public ServerController(int port) throws IOException {
 		downloadPath = null;
 		server = new Server(port);
@@ -45,7 +49,9 @@ public class ServerController extends Application {
 	public void start(final Stage primaryStage) throws IOException {
 		primaryStage.setTitle("Filez4Dayz Server");
 		final FXMLLoader loader = new FXMLLoader(getClass().getResource("ServerApp.fxml"));
+		System.out.println("loading");
 		final Parent root = loader.load();
+		System.out.println("LOADWDDD");
 		final Scene scene = new Scene(root);
 
 		final MenuBar menuBar = (MenuBar) root.lookup("#menuBar");
@@ -77,10 +83,8 @@ public class ServerController extends Application {
 	}
 
 	private void listen() throws IOException {
-		FileInfo file = null;
-		while ((file = server.saveFile()) != null) {
-			data.add(file);
-		}
+	    Listener listener = new Listener(server, data);
+        listener.start();
 	}
 
 	public void addAll(File... files) {
@@ -93,5 +97,35 @@ public class ServerController extends Application {
 
 	protected void setDownloadPath(File downloadPath) {
 		this.downloadPath = downloadPath;
-	}
+	}}
+
+	class Listener extends Thread {
+        private Server server;
+        private ObservableList<FileInfo> data;
+
+        Listener(Server server, ObservableList<FileInfo> data) {
+            this.server = server;
+            this.data = data;
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    listen();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        public void listen() throws IOException {
+            FileInfo file = null;
+            while ((file = server.saveFile()) != null) {
+                data.add(file);
+                file = null;
+            }
+        }
 }
+
+
