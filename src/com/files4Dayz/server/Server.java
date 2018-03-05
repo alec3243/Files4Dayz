@@ -133,11 +133,13 @@ public class Server {
             String hashedValueFromClient = dataReadIn.readUTF(); // GETS STUCK HERE
             System.out.println("Successful read of hash");
             if (checkHash(isArmored ? chunkAfterRemoveArmor : originalChunk, hashedValueFromClient)) {
-                fileToSave.write(isArmored ? chunkAfterRemoveArmor : originalChunk, 0, read);
+                fileToSave.write(isArmored ? chunkAfterRemoveArmor : originalChunk, 0, isArmored ? chunkAfterRemoveArmor.length : read);
                 System.out.println("correct");
                 dataSendOut.writeUTF("correct");
+                dataSendOut.flush();
             } else {
                dataSendOut.writeUTF("wrong");
+               dataSendOut.flush();
                System.out.println("hash wrong");
                 failTime -= 1;
                 if (failTime == 0) {
@@ -147,7 +149,7 @@ public class Server {
             }
         }
         fileToSave.close();
-        dataReadIn.close();
+        //dataReadIn.close();
         System.out.println(successFileTransfer);
         if (successFileTransfer) {
             return new FileInfo(fileName);

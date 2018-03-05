@@ -121,6 +121,7 @@ public class Client {
 				outToServer.writeUTF(findchecksum(buffers));
 				outToServer.flush();
 			}
+			System.out.println("testLMAO");
 			System.out.println(input);
 			size--;
 		}

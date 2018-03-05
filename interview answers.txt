@@ -1,0 +1,14 @@
+Tell me about yourself:
+	Senior CS student, sincerely enjoys diving into software projects and learning how to improve my skills.
+	Strong knowledge of the ins and outs of Java, experience with unit tests how mock tests work.
+	Web development experience with Javascript, Angular, Node.js, Typescript, HTML, CSS, RESTful APIs
+	Strong experience with Git version control
+
+	I'm applying mainly for the experience I'll receive. I've heard from those who have had internships
+	that the knowledge they gained from it is unmatched by any university course or personal project,
+	and I want nothing more than to get this experience before I graduate. The possibility of getting a full-time
+	job offer at Ontraport following the internship is also a big insentive.
+
+Where do you see yourself in five years:
+	My hope is that I'll have excelled as a software developer in that time, and that I continue to enjoy programming
+	just as much as I do right now. Ideally I'll be living in Santa Barbara as I love this city, and pe
