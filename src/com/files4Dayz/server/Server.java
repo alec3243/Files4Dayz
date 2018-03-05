@@ -30,7 +30,7 @@ public class Server {
     private boolean keepConnection = true;
     private String userName;
     private String password;
-    private final File key = new File("key.txt");
+    private final String key = "key.txt";
 
     public Server(int port) throws IOException {
         readCredentialsFromFile();
@@ -133,7 +133,7 @@ public class Server {
                 System.out.println("Server receives " + chunkAfterRemoveArmor.length);
                 System.out.println("Dearmored");
             }
-            String hashedValueFromClient = dataReadIn.readUTF(); // GETS STUCK HERE
+            String hashedValueFromClient = dataReadIn.readUTF();
             System.out.println("Successful read of hash");
             if (checkHash(isArmored ? chunkAfterRemoveArmor : originalChunk, hashedValueFromClient)) {
                 fileToSave.write(isArmored ? chunkAfterRemoveArmor : originalChunk, 0, isArmored ? chunkAfterRemoveArmor.length : read);

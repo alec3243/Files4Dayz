@@ -15,7 +15,7 @@ public class Client {
 	private int corruptedChunks;
 	private String username;
 	private String password;
-
+	private final String key = "key.txt";
 
 	public Client(String ip, int port) throws IOException {
 		s = new Socket(ip, port);
