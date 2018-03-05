@@ -74,7 +74,7 @@ public class Client {
 	}
 	
 	private void sendFile(FileInputStream x, int size, String filename, boolean isArmored) throws IOException {
-		byte[] buffers = new byte[1024];
+
 		outToServer.writeUTF(filename);
 		outToServer.flush();
 		if (isArmored) {
@@ -83,7 +83,9 @@ public class Client {
 			outToServer.writeUTF("not armored");
 		}
 		outToServer.flush();
-		byte[] corrupted = new byte[1024];
+		byte[] corrupted= new byte[1024];
+		byte[] buffers = new byte[1024];
+
 		while (x.read(buffers) > 0) {
 			//getFile.read(buffers);
 

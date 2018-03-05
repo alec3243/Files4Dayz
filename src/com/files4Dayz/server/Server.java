@@ -97,11 +97,14 @@ public class Server {
         String fileName = dataReadIn.readUTF();
         fileToSave = new FileOutputStream(fileName);
         boolean isArmored = false;
+        byte[] originalChunk = null;
         if (dataReadIn.readUTF().equals("armored")) {
             isArmored = true;
+            originalChunk = new byte[1368];
+        } else {
+            originalChunk = new byte[1024];
         }
-        // set each reading chunk to be 1024
-        byte[] originalChunk = new byte[1024];
+
         // decode
         // byte[] data = decode(buffer);
         int read = 0;
@@ -114,7 +117,7 @@ public class Server {
                 originalChunk = AsciiArmor.removeArmor(originalChunk);
                 System.out.println("Dearmored");
             }
-            String hashedValueFromClient = dataReadIn.readUTF();
+            String hashedValueFromClient = dataReadIn.readUTF(); // GETS STUCK HERE
             System.out.println("Successful read of hash");
             if (checkHash(originalChunk, hashedValueFromClient)) {
                 fileToSave.write(originalChunk, 0, read);
