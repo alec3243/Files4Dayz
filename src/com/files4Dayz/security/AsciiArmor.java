@@ -22,23 +22,22 @@ public class AsciiArmor
 		String chunkText = "";
 		String armoredText = "";
 		
-		for (int i = 0; i < input.length; i++)
-		{
-			if (counter == 0 || counter == 1)
-			{
-				twentyFourBitChunk += String.format("%8s", Integer.toBinaryString(input[i])).replace(' ','0');
-				counter++;
-			}
-			else
-			{
-				twentyFourBitChunk += String.format("%8s", Integer.toBinaryString(input[i])).replace(' ','0');
-				chunkText = getArmoredText(chunkText, twentyFourBitChunk);
-				armoredText += chunkText;
-				chunkText = "";
-				twentyFourBitChunk = "";
-				counter = 0;
-			}
-		}
+		for (int i = 0; i < fixedInput.length; i++)
+        {
+            twentyFourBitChunk += String.format("%8s", Integer.toBinaryString(fixedInput[i] & 0xFF)).replace(' ','0');
+            System.out.println(twentyFourBitChunk);
+            if (counter < 2)
+            {
+                counter++;
+                continue;
+            }
+            chunkText = getArmoredText(chunkText, twentyFourBitChunk);
+            armoredText += chunkText;
+            chunkText = "";
+            twentyFourBitChunk = "";
+            counter = 0;
+        }
+		System.out.println("Armoredtext size is " + armoredText.length());
 		byte[] armoredBytes = armoredText.getBytes("UTF-8");
 		return armoredBytes;
 	}
@@ -424,6 +423,7 @@ public class AsciiArmor
 			wholeChunk += smallChunk;
 		}
 		String[] eightBitChunks = wholeChunk.split("(?<=\\G.{8})");
+		System.out.println(eightBitChunks.length);
 		byte[] originalBytes = new byte[1024];
 		for (int i = 0; i < originalBytes.length; i++)
 		{

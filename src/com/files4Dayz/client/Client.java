@@ -125,6 +125,7 @@ public class Client {
 			size--;
 		}
 		x.close();
+		outToServer.close();
 	}
 
 	public void sendCorrupted(int i) {
