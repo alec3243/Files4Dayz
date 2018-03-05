@@ -125,14 +125,15 @@ public class Server {
             //decode(originalChunk);
             // decrypt
             //encryptDecrypt(originalChunk, key);
+        		byte[] chunkAfterRemoveArmor = new byte[1024];
             if (isArmored) {
-                originalChunk = AsciiArmor.removeArmor(originalChunk);
+                chunkAfterRemoveArmor = AsciiArmor.removeArmor(originalChunk);
                 System.out.println("Dearmored");
             }
             String hashedValueFromClient = dataReadIn.readUTF(); // GETS STUCK HERE
             System.out.println("Successful read of hash");
-            if (checkHash(originalChunk, hashedValueFromClient)) {
-                fileToSave.write(originalChunk, 0, read);
+            if (checkHash(isArmored ? chunkAfterRemoveArmor : originalChunk, hashedValueFromClient)) {
+                fileToSave.write(isArmored ? chunkAfterRemoveArmor : originalChunk, 0, read);
                 System.out.println("correct");
                 dataSendOut.writeUTF("correct");
             } else {
@@ -146,6 +147,7 @@ public class Server {
             }
         }
         fileToSave.close();
+        dataReadIn.close();
         System.out.println(successFileTransfer);
         if (successFileTransfer) {
             return new FileInfo(fileName);
