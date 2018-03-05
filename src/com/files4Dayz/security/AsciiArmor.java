@@ -425,6 +425,7 @@ public class AsciiArmor
 		String[] eightBitChunks = wholeChunk.split("(?<=\\G.{8})");
 		System.out.println(eightBitChunks.length);
 		byte[] originalBytes = new byte[1024];
+
 		for (int i = 0; i < originalBytes.length; i++)
 		{
 			originalBytes[i] = (byte) Integer.parseInt(eightBitChunks[i], 2);

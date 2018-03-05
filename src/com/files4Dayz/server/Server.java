@@ -15,6 +15,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Server {
     private DataInputStream dataReadIn;
@@ -125,9 +127,10 @@ public class Server {
             //decode(originalChunk);
             // decrypt
             //encryptDecrypt(originalChunk, key);
-        		byte[] chunkAfterRemoveArmor = new byte[1024];
+            byte[] chunkAfterRemoveArmor = null;
             if (isArmored) {
                 chunkAfterRemoveArmor = AsciiArmor.removeArmor(originalChunk);
+                System.out.println("Server receives " + chunkAfterRemoveArmor.length);
                 System.out.println("Dearmored");
             }
             String hashedValueFromClient = dataReadIn.readUTF(); // GETS STUCK HERE

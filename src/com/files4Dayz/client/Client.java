@@ -88,6 +88,7 @@ public class Client {
 		outToServer.flush();
 		byte[] corrupted= new byte[1024];
 		byte[] buffers = new byte[1024];
+		byte[] bytesToServer = null;
 		String checksum = null;
 		while (x.read(buffers) > 0) {
 			//getFile.read(buffers);
@@ -97,18 +98,21 @@ public class Client {
 					corrupted[i] = (byte) (i % Byte.MAX_VALUE);
 				}
 				if (isArmored) {
-					corrupted = AsciiArmor.armor(corrupted);
+					bytesToServer = AsciiArmor.armor(corrupted);
+					outToServer.write(bytesToServer);
+				} else {
+					outToServer.write(corrupted);
 				}
-				outToServer.write(corrupted);
 				outToServer.flush();
 				corruptedChunks--;
 			} else {
 				if (isArmored) {
 					System.out.println("Armoring...");
-					buffers = AsciiArmor.armor(buffers);
+					bytesToServer = AsciiArmor.armor(buffers);
 					System.out.println("ARMORED.");
 				}
-				outToServer.write(buffers);
+				System.out.println(buffers.length);
+				outToServer.write(bytesToServer);
 				outToServer.flush();
 			}
 			outToServer.writeUTF(checksum);
@@ -117,7 +121,7 @@ public class Client {
 			String input = null;
 			while ((input = inFromServer.readUTF()).equals("wrong")) {
 				System.out.println("Chunk is resent");
-				outToServer.write(buffers);
+				outToServer.write(bytesToServer);
 				outToServer.writeUTF(findchecksum(buffers));
 				outToServer.flush();
 			}
@@ -126,7 +130,7 @@ public class Client {
 			size--;
 		}
 		x.close();
-		outToServer.close();
+		//outToServer.close();
 	}
 
 	public void sendCorrupted(int i) {
