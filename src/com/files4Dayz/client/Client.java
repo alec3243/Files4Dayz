@@ -100,6 +100,7 @@ public class Client {
 					corrupted = AsciiArmor.armor(corrupted);
 				}
 				outToServer.write(corrupted);
+				outToServer.flush();
 				corruptedChunks--;
 			} else {
 				if (isArmored) {
@@ -108,6 +109,7 @@ public class Client {
 					System.out.println("ARMORED.");
 				}
 				outToServer.write(buffers);
+				outToServer.flush();
 			}
 			outToServer.writeUTF(checksum);
 			outToServer.flush();
