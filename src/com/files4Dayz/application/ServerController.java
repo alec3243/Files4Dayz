@@ -15,6 +15,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 
@@ -113,9 +114,10 @@ public class ServerController extends Application {
             while (true) {
                 try {
                     listen();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                } catch (Exception e) {
+                	e.printStackTrace();
+                	System.exit(1);
+				}
             }
         }
 

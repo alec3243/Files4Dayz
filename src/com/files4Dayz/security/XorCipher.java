@@ -1,18 +1,30 @@
 package com.files4Dayz.security;
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.Iterator;
 
 public class XorCipher {
 
-    public static byte[] encryptDecrypt(byte[] inputx, File pass) throws IOException {
-    	InputStream is = new FileInputStream(pass);
+    public static String encryptDecrypt(String input, File pass) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(pass));
+        StringBuilder keyBuilder = new StringBuilder();
+        String current;
+        while ((current = br.readLine()) != null) {
+            keyBuilder.append(current);
+        }
+        br.close();
+        char[] key = (new String(keyBuilder)).toCharArray();
+        StringBuilder output = new StringBuilder();
+
+        for (int i = 0; i < input.length(); i++) {
+            output.append((char) (input.charAt(i) ^ key[i % key.length]));
+        }
+
+        return output.toString();
+    }
+
+    public static byte[] encryptDecrypt(byte[] inputx, File key) throws IOException {
+    	InputStream is = new FileInputStream(key);
     	DataInputStream ds = new DataInputStream(is);
     	byte[] password = new byte[inputx.length];
     	ds.read(password);
@@ -53,7 +65,7 @@ public class XorCipher {
         return getBytes(output.toString());
     }
     
-    public static byte[] getBytes(String x) {
+    private static byte[] getBytes(String x) {
     	byte[] newbit = new byte[x.length()/8];
     	for (int i = 0; i < newbit.length; i++ ) {
     		for (int j = 0; j <= 7; j++) {
@@ -89,14 +101,9 @@ public class XorCipher {
                     }
                     return value;
                 }
-
-
             };
-
         }
-
     }
-    
 }
 
 

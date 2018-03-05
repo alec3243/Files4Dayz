@@ -1,6 +1,8 @@
 package com.files4Dayz.server;
 import com.files4Dayz.application.FileInfo;
 import com.files4Dayz.security.AsciiArmor;
+import com.files4Dayz.security.XorCipher;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.net.*;
 import java.io.*;
@@ -14,6 +16,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Server {
     private DataInputStream dataReadIn;
@@ -25,11 +29,12 @@ public class Server {
     private boolean successVerification = false;
     private boolean successFileTransfer = true;
     private boolean keepConnection = true;
-    private final String userName = "admin";
-    private final String password = "abc123";
-    private final File key = new File("key.txt");
+    private String userName;
+    private String password;
+    private final String key = "key.txt";
 
-    public Server(int port){
+    public Server(int port) throws IOException {
+        readCredentialsFromFile();
         if (!(port == 0)) {
             try {
                 server = new ServerSocket(port);
@@ -39,8 +44,16 @@ public class Server {
                 e.printStackTrace();
             }
         }
-        
     }
+
+    private void readCredentialsFromFile() throws IOException {
+        final String credentials = "credentials.txt";
+        BufferedReader br = new BufferedReader(new FileReader(new File(credentials)));
+        userName = br.readLine();
+        password = br.readLine();
+        br.close();
+    }
+
     public void runAsServer() throws IOException {
         try {
             client = server.accept();
@@ -68,7 +81,7 @@ public class Server {
         while (failTime > 0) {
             userNameClient = dataReadIn.readUTF();
             passwordClient = dataReadIn.readUTF();
-            if (!userNameClient.equals(userName) || !passwordClient.equals(password)) {
+            if (!userNameClient.equals(userName) || !BCrypt.checkpw(passwordClient, password)) {
                 if (failTime > 1) {
                     dataSendOut.writeUTF("Wrong combination");
                     System.out.println("shits wrong lmao");
@@ -89,6 +102,8 @@ public class Server {
         if (failTime == 0) {
             System.out.println("Too many fails. Server will close");
             dataSendOut.writeUTF("Close");
+            client.close();
+            System.exit(0);
         }
     }
     public FileInfo saveFile() throws IOException {
@@ -97,29 +112,57 @@ public class Server {
         String fileName = dataReadIn.readUTF();
         fileToSave = new FileOutputStream(fileName);
         boolean isArmored = false;
+        byte[] originalChunk = null;
         if (dataReadIn.readUTF().equals("armored")) {
             isArmored = true;
+            originalChunk = new byte[1368];
+        } else {
+            originalChunk = new byte[1024];
         }
-        // set each reading chunk to be 1024
-        byte[] originalChunk = new byte[1024];
+
         // decode
         // byte[] data = decode(buffer);
         int read = 0;
+        int size = 0;
         while ((read = dataReadIn.read(originalChunk)) > 0) {
+        	size++;
             // base 64 decode
             //decode(originalChunk);
             // decrypt
             //encryptDecrypt(originalChunk, key);
+            byte[] chunkAfterRemoveArmor = null;
             if (isArmored) {
-                originalChunk = AsciiArmor.removeArmor(originalChunk);
+                chunkAfterRemoveArmor = AsciiArmor.removeArmor(originalChunk);
+                chunkAfterRemoveArmor = XorCipher.encryptDecrypt(chunkAfterRemoveArmor, new File(key));
+                System.out.println("Server receives " + chunkAfterRemoveArmor.length);
+                System.out.println("Dearmored");
+            } else {
+                originalChunk = XorCipher.encryptDecrypt(originalChunk, new File(key));
             }
             String hashedValueFromClient = dataReadIn.readUTF();
-            if (checkHash(originalChunk, hashedValueFromClient)) {
-                fileToSave.write(originalChunk, 0, read);
+            System.out.println("Cipher checksum " + hashedValueFromClient);
+            hashedValueFromClient = XorCipher.encryptDecrypt(hashedValueFromClient, new File(key));
+            System.out.println("Original checksum " + hashedValueFromClient);
+            System.out.println("Successful read of hash");
+            if (isArmored) {
+            	System.out.println(findchecksum(chunkAfterRemoveArmor));
+            } else {
+            	System.out.println(findchecksum(originalChunk));
+            }
+            int failedAttempts = 0;
+            if (checkHash(isArmored ? chunkAfterRemoveArmor : originalChunk, hashedValueFromClient)) {
+                fileToSave.write(isArmored ? chunkAfterRemoveArmor : originalChunk, 0, isArmored ? chunkAfterRemoveArmor.length : read);
                 System.out.println("correct");
                 dataSendOut.writeUTF("correct");
+                dataSendOut.flush();
             } else {
+                failedAttempts++;
+                if (failedAttempts == 3) {
+                    dataSendOut.writeUTF("closing");
+                    System.exit(0);
+                }
                dataSendOut.writeUTF("wrong");
+               dataSendOut.flush();
                System.out.println("hash wrong");
                 failTime -= 1;
                 if (failTime == 0) {
@@ -127,8 +170,10 @@ public class Server {
                     break;
                 }
             }
+            System.out.println("Receive " + size + " KB" );
         }
         fileToSave.close();
+        //dataReadIn.close();
         System.out.println(successFileTransfer);
         if (successFileTransfer) {
             return new FileInfo(fileName);

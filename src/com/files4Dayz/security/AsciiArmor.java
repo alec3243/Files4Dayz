@@ -1,7 +1,6 @@
 package com.files4Dayz.security;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Iterator;
 
 
 public class AsciiArmor
@@ -15,8 +14,7 @@ public class AsciiArmor
 											'2', '3', '4', '5', '6', '7', '8', '9', '+',
 											'/'};
 	
-	public static byte[] armor(byte[] input)
-	{
+	public static byte[] armor(byte[] input) throws UnsupportedEncodingException {
 		int counter = 0;
 		byte[] fixedInput = new byte[input.length + 2];
 		System.arraycopy(input, 0, fixedInput, 0, input.length);
@@ -24,24 +22,23 @@ public class AsciiArmor
 		String chunkText = "";
 		String armoredText = "";
 		
-		for (int i = 0; i < input.length; i++)
-		{
-			if (counter == 0 || counter == 1)
-			{
-				twentyFourBitChunk += String.format("%8s", Integer.toBinaryString(input[i])).replace(' ','0');
-				counter++;
-			}
-			else
-			{
-				twentyFourBitChunk += String.format("%8s", Integer.toBinaryString(input[i])).replace(' ','0');
-				chunkText = getArmoredText(chunkText, twentyFourBitChunk);
-				armoredText += chunkText;
-				chunkText = "";
-				twentyFourBitChunk = "";
-				counter = 0;
-			}
-		}
-		byte[] armoredBytes = armoredText.getBytes();
+		for (int i = 0; i < fixedInput.length; i++)
+        {
+            twentyFourBitChunk += String.format("%8s", Integer.toBinaryString(fixedInput[i] & 0xFF)).replace(' ','0');
+            
+            if (counter < 2)
+            {
+                counter++;
+                continue;
+            }
+            chunkText = getArmoredText(chunkText, twentyFourBitChunk);
+            armoredText += chunkText;
+            chunkText = "";
+            twentyFourBitChunk = "";
+            counter = 0;
+        }
+		
+		byte[] armoredBytes = armoredText.getBytes("UTF-8");
 		return armoredBytes;
 	}
 	
@@ -49,7 +46,7 @@ public class AsciiArmor
 	{
 		String[] sixBitChunks = eightBitChunks.split("(?<=\\G.{6})");
 		char[] asciiChar = new char[sixBitChunks.length];
-		int asciiVal;
+		int asciiVal = 0;
 		for (int j = 0; j < sixBitChunks.length; j++)
 		{
 			if (sixBitChunks[j].equals("000000"))
@@ -58,33 +55,30 @@ public class AsciiArmor
 				{
 					asciiVal = Integer.parseInt(sixBitChunks[j], 2);
 					asciiChar[j] = encoding[asciiVal];
-					input += asciiChar[j];
 				}
 				else if (j >= sixBitChunks.length - 2)
 				{
 					asciiChar[j] = '=';
-					input += asciiChar[j];
 				}
+				else
 				{
-					if (!(sixBitChunks[j-1].equals("000000")))
+					if (sixBitChunks[j-1].equals("000000"))
 					{
-						asciiVal = Integer.parseInt(sixBitChunks[j], 2);
-						asciiChar[j] = encoding[asciiVal];
-						input += asciiChar[j];
+						asciiChar[j] = '=';
 					}
 					else
 					{
-						asciiChar[j] = '=';
-						input += asciiChar[j];
-					}
+						asciiVal = Integer.parseInt(sixBitChunks[j], 2);
+						asciiChar[j] = encoding[asciiVal];
+					}					
 				}
 			}
 			else
 			{
 				asciiVal = Integer.parseInt(sixBitChunks[j], 2);
 				asciiChar[j] = encoding[asciiVal];
-				input += asciiChar[j];
 			}
+			input += asciiChar[j];
 		}
 		return input;
 	}
@@ -429,7 +423,8 @@ public class AsciiArmor
 			wholeChunk += smallChunk;
 		}
 		String[] eightBitChunks = wholeChunk.split("(?<=\\G.{8})");
-		byte[] originalBytes = new byte[eightBitChunks.length];
+		byte[] originalBytes = new byte[1024];
+
 		for (int i = 0; i < originalBytes.length; i++)
 		{
 			originalBytes[i] = (byte) Integer.parseInt(eightBitChunks[i], 2);

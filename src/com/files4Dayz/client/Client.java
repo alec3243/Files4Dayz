@@ -4,6 +4,8 @@ import java.net.*;
 
 import com.files4Dayz.security.AsciiArmor;
 import com.files4Dayz.security.Checksum;
+import com.files4Dayz.security.XorCipher;
+
 import java.util.*;
 
 import static com.files4Dayz.security.Checksum.findchecksum;
@@ -15,7 +17,7 @@ public class Client {
 	private int corruptedChunks;
 	private String username;
 	private String password;
-
+	private final String key = "key.txt";
 
 	public Client(String ip, int port) throws IOException {
 		s = new Socket(ip, port);
@@ -63,9 +65,12 @@ public class Client {
 		message = inFromServer.readUTF();
 		if (message.equals("Wrong combination")) {
 			return false;
+		} else if (message.equals("Close")) {
+			System.exit(0);
 		} else {
 			return true;
 		}
+		return false;
 	}
 
 	private void wrapClientStreams() throws IOException {
@@ -74,7 +79,7 @@ public class Client {
 	}
 	
 	private void sendFile(FileInputStream x, int size, String filename, boolean isArmored) throws IOException {
-		byte[] buffers = new byte[1024];
+		int what = 0;
 		outToServer.writeUTF(filename);
 		outToServer.flush();
 		if (isArmored) {
@@ -83,38 +88,62 @@ public class Client {
 			outToServer.writeUTF("not armored");
 		}
 		outToServer.flush();
-		byte[] corrupted = new byte[1024];
+		byte[] corrupted= new byte[1024];
+		byte[] buffers = new byte[1024];
+		byte[] bytesToServer = null;
+		String checksum = null;
 		while (x.read(buffers) > 0) {
-			//getFile.read(buffers);
-
+			what++;
+			checksum = findchecksum(buffers);
+			buffers = XorCipher.encryptDecrypt(buffers, new File(key));
+			System.out.println(buffers.length + " after xor");
+			System.out.println("Regular checksum " + checksum);
+			checksum = XorCipher.encryptDecrypt(checksum, new File(key));
+			System.out.println("Cipher checksu " + checksum);
 			if (corruptedChunks > 0) {
 				for (int i = 0; i < corrupted.length; i++) {
 					corrupted[i] = (byte) (i % Byte.MAX_VALUE);
 				}
 				if (isArmored) {
-					corrupted = AsciiArmor.armor(corrupted);
+					bytesToServer = AsciiArmor.armor(corrupted);
+					outToServer.write(bytesToServer);
+				} else {
+					outToServer.write(corrupted);
 				}
-				outToServer.write(corrupted);
+				outToServer.flush();
 				corruptedChunks--;
 			} else {
 				if (isArmored) {
-					buffers = AsciiArmor.armor(buffers);
+					System.out.println("Armoring...");
+					bytesToServer = AsciiArmor.armor(buffers);
+					System.out.println("ARMORED.");
+				} else {
+					bytesToServer = buffers;
 				}
-				outToServer.write(buffers);
+				System.out.println(buffers.length);
+				outToServer.write(bytesToServer);
+				outToServer.flush();
 			}
-			outToServer.writeUTF(findchecksum(buffers));
+			outToServer.writeUTF(checksum);
 			outToServer.flush();
+			System.out.println("Sent hash of chunk");
 			String input = null;
 			while ((input = inFromServer.readUTF()).equals("wrong")) {
 				System.out.println("Chunk is resent");
-				outToServer.write(buffers);
-				outToServer.writeUTF(findchecksum(buffers));
+				outToServer.write(bytesToServer);
+				outToServer.writeUTF(checksum);
 				outToServer.flush();
 			}
+			if (input.equals("closing")) {
+				System.exit(0);
+			}
+			System.out.println("testLMAO");
 			System.out.println(input);
 			size--;
+			System.out.println("Sent " + what + " KB" );
 		}
 		x.close();
+		//outToServer.close();
 	}
 
 	public void sendCorrupted(int i) {
