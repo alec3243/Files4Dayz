@@ -63,9 +63,12 @@ public class Client {
 		message = inFromServer.readUTF();
 		if (message.equals("Wrong combination")) {
 			return false;
+		} else if (message.equals("Close")) {
+			System.exit(0);
 		} else {
 			return true;
 		}
+		return false;
 	}
 
 	private void wrapClientStreams() throws IOException {
@@ -85,10 +88,10 @@ public class Client {
 		outToServer.flush();
 		byte[] corrupted= new byte[1024];
 		byte[] buffers = new byte[1024];
-
+		String checksum = null;
 		while (x.read(buffers) > 0) {
 			//getFile.read(buffers);
-
+			checksum = findchecksum(buffers);
 			if (corruptedChunks > 0) {
 				for (int i = 0; i < corrupted.length; i++) {
 					corrupted[i] = (byte) (i % Byte.MAX_VALUE);
@@ -106,9 +109,9 @@ public class Client {
 				}
 				outToServer.write(buffers);
 			}
-			outToServer.writeUTF(findchecksum(buffers));
-			System.out.println("Sent hash of chunk");
+			outToServer.writeUTF(checksum);
 			outToServer.flush();
+			System.out.println("Sent hash of chunk");
 			String input = null;
 			while ((input = inFromServer.readUTF()).equals("wrong")) {
 				System.out.println("Chunk is resent");

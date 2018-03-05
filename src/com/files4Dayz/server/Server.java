@@ -1,6 +1,7 @@
 package com.files4Dayz.server;
 import com.files4Dayz.application.FileInfo;
 import com.files4Dayz.security.AsciiArmor;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.net.*;
 import java.io.*;
@@ -25,11 +26,12 @@ public class Server {
     private boolean successVerification = false;
     private boolean successFileTransfer = true;
     private boolean keepConnection = true;
-    private final String userName = "admin";
-    private final String password = "abc123";
+    private String userName;
+    private String password;
     private final File key = new File("key.txt");
 
-    public Server(int port){
+    public Server(int port) throws IOException {
+        readCredentialsFromFile();
         if (!(port == 0)) {
             try {
                 server = new ServerSocket(port);
@@ -39,8 +41,16 @@ public class Server {
                 e.printStackTrace();
             }
         }
-        
     }
+
+    private void readCredentialsFromFile() throws IOException {
+        final String credentials = "credentials.txt";
+        BufferedReader br = new BufferedReader(new FileReader(new File(credentials)));
+        userName = br.readLine();
+        password = br.readLine();
+        br.close();
+    }
+
     public void runAsServer() throws IOException {
         try {
             client = server.accept();
@@ -68,7 +78,7 @@ public class Server {
         while (failTime > 0) {
             userNameClient = dataReadIn.readUTF();
             passwordClient = dataReadIn.readUTF();
-            if (!userNameClient.equals(userName) || !passwordClient.equals(password)) {
+            if (!userNameClient.equals(userName) || !BCrypt.checkpw(passwordClient, password)) {
                 if (failTime > 1) {
                     dataSendOut.writeUTF("Wrong combination");
                     System.out.println("shits wrong lmao");
@@ -89,6 +99,8 @@ public class Server {
         if (failTime == 0) {
             System.out.println("Too many fails. Server will close");
             dataSendOut.writeUTF("Close");
+            client.close();
+            System.exit(0);
         }
     }
     public FileInfo saveFile() throws IOException {
