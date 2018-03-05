@@ -18,7 +18,7 @@
                </VBox.margin>
             </TextField>
             <Label text="Password" />
-            <TextField fx:id="passwordField" />
+            <PasswordField fx:id="passwordField" />
             <Label fx:id="warningLabel" prefHeight="21.0" prefWidth="247.0" text="Username or password incorrect" textFill="#f80505">
                <VBox.margin>
                   <Insets top="15.0" />

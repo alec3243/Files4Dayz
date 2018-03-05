@@ -80,6 +80,7 @@ public class Client {
 	
 	private void sendFile(FileInputStream x, int size, String filename, boolean isArmored) throws IOException {
 		int what = 0;
+
 		outToServer.writeUTF(filename);
 		outToServer.flush();
 		if (isArmored) {
@@ -119,6 +120,7 @@ public class Client {
 					System.out.println("ARMORED.");
 				} else {
 					bytesToServer = buffers;
+
 				}
 				System.out.println(buffers.length);
 				outToServer.write(bytesToServer);
