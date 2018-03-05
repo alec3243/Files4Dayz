@@ -4,6 +4,8 @@ import java.net.*;
 
 import com.files4Dayz.security.AsciiArmor;
 import com.files4Dayz.security.Checksum;
+import com.files4Dayz.security.XorCipher;
+
 import java.util.*;
 
 import static com.files4Dayz.security.Checksum.findchecksum;
@@ -91,8 +93,12 @@ public class Client {
 		byte[] bytesToServer = null;
 		String checksum = null;
 		while (x.read(buffers) > 0) {
-			//getFile.read(buffers);
+			buffers = XorCipher.encryptDecrypt(buffers, new File(key));
+			System.out.println(buffers.length + " after xor");
 			checksum = findchecksum(buffers);
+			System.out.println("Regular checksum " + checksum);
+			checksum = XorCipher.encryptDecrypt(checksum, new File(key));
+			System.out.println("Cipher checksu " + checksum);
 			if (corruptedChunks > 0) {
 				for (int i = 0; i < corrupted.length; i++) {
 					corrupted[i] = (byte) (i % Byte.MAX_VALUE);
@@ -122,8 +128,11 @@ public class Client {
 			while ((input = inFromServer.readUTF()).equals("wrong")) {
 				System.out.println("Chunk is resent");
 				outToServer.write(bytesToServer);
-				outToServer.writeUTF(findchecksum(buffers));
+				outToServer.writeUTF(checksum);
 				outToServer.flush();
+			}
+			if (input.equals("closing")) {
+				System.exit(0);
 			}
 			System.out.println("testLMAO");
 			System.out.println(input);

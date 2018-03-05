@@ -1,6 +1,7 @@
 package com.files4Dayz.server;
 import com.files4Dayz.application.FileInfo;
 import com.files4Dayz.security.AsciiArmor;
+import com.files4Dayz.security.XorCipher;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.net.*;
@@ -130,17 +131,29 @@ public class Server {
             byte[] chunkAfterRemoveArmor = null;
             if (isArmored) {
                 chunkAfterRemoveArmor = AsciiArmor.removeArmor(originalChunk);
+                chunkAfterRemoveArmor = XorCipher.encryptDecrypt(chunkAfterRemoveArmor, new File(key));
                 System.out.println("Server receives " + chunkAfterRemoveArmor.length);
                 System.out.println("Dearmored");
+            } else {
+                originalChunk = XorCipher.encryptDecrypt(originalChunk, new File(key));
             }
             String hashedValueFromClient = dataReadIn.readUTF();
+            System.out.println("Cipher checksum " + hashedValueFromClient);
+            hashedValueFromClient = XorCipher.encryptDecrypt(hashedValueFromClient, new File(key));
+            System.out.println("Original checksum " + hashedValueFromClient);
             System.out.println("Successful read of hash");
+            int failedAttempts = 0;
             if (checkHash(isArmored ? chunkAfterRemoveArmor : originalChunk, hashedValueFromClient)) {
                 fileToSave.write(isArmored ? chunkAfterRemoveArmor : originalChunk, 0, isArmored ? chunkAfterRemoveArmor.length : read);
                 System.out.println("correct");
                 dataSendOut.writeUTF("correct");
                 dataSendOut.flush();
             } else {
+                failedAttempts++;
+                if (failedAttempts == 3) {
+                    dataSendOut.writeUTF("closing");
+                    System.exit(0);
+                }
                dataSendOut.writeUTF("wrong");
                dataSendOut.flush();
                System.out.println("hash wrong");
